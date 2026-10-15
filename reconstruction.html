@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3D/4D reconstruction · Jiaxin Huang</title>
+<meta name="description" content="Jiaxin Huang&#x27;s work on 3D/4D reconstruction with Gaussian splatting: UrbanGS, Mirage2Matter and a survey of video world models.">
+<meta property="og:title" content="3D/4D reconstruction · Jiaxin Huang">
+<meta property="og:description" content="Jiaxin Huang&#x27;s work on 3D/4D reconstruction with Gaussian splatting: UrbanGS, Mirage2Matter and a survey of video world models.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%279%27%20fill%3D%27%23b23a2c%27/%3E%3Ctext%20x%3D%2732%27%20y%3D%2746%27%20font-size%3D%2740%27%20text-anchor%3D%27middle%27%20fill%3D%27%23fbf3ee%27%20font-family%3D%27serif%27%3E%E9%BB%84%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&amp;family=Ma+Shan+Zheng&amp;family=Noto+Serif+SC:wght@400;600&amp;display=swap">
+<style>
+/* Layout: a sticky point-cloud "world" (left) that the four perspectives redraw as they scroll past (right);
+   full-width reference bands (publications, news, about) follow. Palette: misty paper, ink, and the four
+   mineral pigments of blue-green landscape painting, one per perspective; cinnabar only for the seal.
+   Type: Charter for headings and quotations, Aptos for running text (Lato where Aptos is not installed),
+   Lato for small labels; Chinese in Noto Serif SC and Ma Shan Zheng. */
+/* Bitstream Charter, free to use and redistribute; notice in fonts/LICENSE-Charter.txt */
+@font-face { font-family: "Charter"; src: url("fonts/charter_regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Charter"; src: url("fonts/charter_italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Charter"; src: url("fonts/charter_bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Charter"; src: url("fonts/charter_bold_italic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: swap; }
+:root {
+  --paper: #f5f3ee;
+  --paper-2: #ebe7de;
+  --veil: rgba(245, 243, 238, 0.88);
+  --ink: #1b1a17;
+  --ink-2: #4a4740;
+  --ink-3: #6e6a62;
+  --rule: #d9d4c9;
+  --glyph: #ebe6dc;
+  --plate: #ffffff;       /* paper figures keep their own white ground */
+  --plate-filter: none;
+  --c-spatial: #2b5b8e;   /* 石青 azurite */
+  --c-recon: #2d775f;     /* 石绿 malachite */
+  --c-nav: #93601f;       /* 赭石 ochre */
+  --c-safety: #9e3350;    /* 胭脂 rouge */
+  --seal: #b23a2c;        /* 朱砂 cinnabar */
+  --on-seal: #fbf3ee;
+  --link: var(--c-spatial);
+
+  --font-display: "Charter", "Noto Serif SC", Georgia, serif;
+  --font-body: "Aptos", "Lato", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-ui: "Lato", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-zh: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-brush: "Ma Shan Zheng", "Noto Serif SC", "STKaiti", "KaiTi", serif;
+
+  --header-h: 56px;
+  color-scheme: light;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121211; --paper-2: #1b1a18; --veil: rgba(18, 18, 17, 0.88);
+    --ink: #ebe7df; --ink-2: #b6b0a6; --ink-3: #8b857b; --rule: #2f2d29; --glyph: #1f1e1b;
+    --plate-filter: brightness(0.9);
+    --c-spatial: #8fb5e3; --c-recon: #7cc5a9; --c-nav: #d9a464; --c-safety: #e58aa0;
+    --seal: #cf5442; --on-seal: #fff6f1;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121211; --paper-2: #1b1a18; --veil: rgba(18, 18, 17, 0.88);
+  --ink: #ebe7df; --ink-2: #b6b0a6; --ink-3: #8b857b; --rule: #2f2d29; --glyph: #1f1e1b;
+  --plate-filter: brightness(0.9);
+  --c-spatial: #8fb5e3; --c-recon: #7cc5a9; --c-nav: #d9a464; --c-safety: #e58aa0;
+  --seal: #cf5442; --on-seal: #fff6f1;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--header-h) + 16px); -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1rem/1.62 var(--font-body); }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--c-spatial); outline-offset: 3px; border-radius: 2px; }
+i { font-style: italic; }
+.m { font-weight: 700; color: inherit; }   /* method, model and dataset names */
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+.wrap {
+  max-width: 1240px; margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- header ---------- */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--veil); border-bottom: 1px solid var(--rule);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.topbar-in { height: var(--header-h); display: flex; align-items: center; gap: 18px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 700 1.05rem/1 var(--font-display); white-space: nowrap; }
+.seal-sm { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 3px; background: var(--seal); color: var(--on-seal); font: 400 17px/1 var(--font-brush); }
+.topnav { margin-left: auto; display: flex; gap: 18px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.topnav::-webkit-scrollbar { display: none; }
+.topnav a { color: var(--ink-2); text-decoration: none; font: 400 0.9rem/1.62 var(--font-ui); white-space: nowrap; padding-block: 6px; }
+.topnav a:hover { color: var(--ink); }
+@media (max-width: 520px) { .topbar-in { gap: 12px; } .topnav { gap: 14px; } }
+.theme-btn { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--rule); background: transparent; color: var(--ink); font: 400 17px/1 var(--font-brush); cursor: pointer; }
+.theme-btn:hover { border-color: var(--ink-3); }
+
+/* ---------- story grid: hero + sticky stage + chapters ---------- */
+.story { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 36px 16px; }
+@media (min-width: 960px) {
+  .story { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); grid-template-areas: "stage hero" "stage chapters"; column-gap: 56px; row-gap: 8px; padding-block: 52px 24px; }
+  .hero { grid-area: hero; }
+  .chapters { grid-area: chapters; }
+  .stage { grid-area: stage; position: sticky; top: calc(var(--header-h) + env(safe-area-inset-top, 0px) + 20px); align-self: start; }
+}
+
+.eyebrow, .kicker, .verse-label, .wid, .showing, .news time, .about-grid h3, .when, .stage-hint, .pub-id, .badge, .tag {
+  font-family: var(--font-ui); font-weight: 400;
+}
+.wid, .pub-id, .kicker .num { font-weight: 700; }
+.eyebrow { margin: 0 0 14px; font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+
+/* hero */
+.hero h1 { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; font: 400 clamp(2.4rem, 5.6vw, 3.5rem)/1.06 var(--font-display); letter-spacing: -0.015em; }
+.name-zh { font: 400 0.48em/1 var(--font-zh); letter-spacing: 0.14em; color: var(--ink-2); }
+.seal { display: inline-flex; flex-direction: column; align-items: center; align-self: center; padding: 5px 5px 4px; border-radius: 3px; background: var(--seal); color: var(--on-seal); font: 400 1.1rem/1.05 var(--font-brush); letter-spacing: 0; }
+.role { margin: 18px 0 0; color: var(--ink-2); max-width: 40em; }
+.thesis { margin: 18px 0 0; max-width: 32em; font: 400 clamp(1.2rem, 2.1vw, 1.42rem)/1.45 var(--font-display); text-wrap: pretty; }
+.links { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.95rem; }
+.links .email { display: inline-flex; align-items: baseline; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.links .email a { overflow-wrap: anywhere; }
+.copy-btn { font: 700 0.68rem/1 var(--font-ui); letter-spacing: 0.04em; padding: 4px 8px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink-2); cursor: pointer; }
+.copy-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+.open { margin: 16px 0 0; display: flex; gap: 10px; align-items: center; font-size: 0.9rem; color: var(--ink-2); }
+.open .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--c-recon); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-recon) 20%, transparent); }
+
+/* vertical classical text: one column per phrase, read right to left, no punctuation, as in old printed texts.
+   Columns are built explicitly (one stacked character at a time) so they render the same with any font. */
+.zh-v { margin: 0; font: 400 1.42rem/1 var(--font-brush); color: var(--ink); }
+.zh-v .cols { display: flex; flex-direction: row-reverse; gap: 0.42em; }
+.zh-v .col { display: flex; flex-direction: column; align-items: center; gap: 0.08em; }
+.zh-v .col span { display: block; line-height: 1.12; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.epigraph { margin: 30px 0 0; padding-top: 22px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 22px; align-items: start; }
+.epigraph .zh-v { font-size: 1.36rem; }
+.tr { margin: 0; font: 400 1.02rem/1.55 var(--font-display); color: var(--ink); text-wrap: pretty; }
+cite { display: block; margin-top: 8px; font: normal 400 0.8rem/1.45 var(--font-body); color: var(--ink-3); }
+cite i { font-style: italic; }
+
+/* stage */
+.stage { display: grid; gap: 12px; }
+.stage-frame { position: relative; overflow: hidden; border: 1px solid var(--rule); border-radius: 4px; aspect-ratio: 4 / 3.3; max-height: 66vh; width: 100%;
+  background: radial-gradient(120% 90% at 50% 78%, var(--paper-2), var(--paper) 72%); }
+@media (min-width: 960px) { .stage-frame { aspect-ratio: auto; height: min(58vh, 560px); max-height: none; } }
+#world { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
+#world:active { cursor: grabbing; }
+.stage-view { position: absolute; left: 14px; top: 10px; margin: 0; font: 400 0.92rem/1.4 var(--font-zh); color: var(--ink-2); pointer-events: none; }
+.stage-hint { position: absolute; right: 12px; bottom: 8px; margin: 0; font-size: 0.68rem; letter-spacing: 0.04em; color: var(--ink-3); pointer-events: none; }
+.stage-noscript { position: absolute; inset: auto 14px 40% 14px; margin: 0; text-align: center; color: var(--ink-2); }
+.lenses { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.lens-btn { --btn: var(--ink); display: grid; justify-items: center; gap: 3px; padding: 7px 2px 8px; border: 1px solid var(--rule); border-radius: 4px; background: transparent; color: var(--ink-2); cursor: pointer; font: 400 0.74rem/1.2 var(--font-ui); }
+.lens-btn .g { font: 400 1.34rem/1.1 var(--font-brush); color: var(--btn); }
+.lens-btn .l { max-width: 100%; white-space: nowrap; }
+@media (max-width: 440px) { .lens-btn .l { font-size: 0.6rem; letter-spacing: -0.01em; } }
+.lens-btn:hover { border-color: var(--ink-3); }
+.lens-btn[aria-pressed="true"] { color: var(--ink); background: var(--paper-2); border-color: var(--btn); box-shadow: inset 0 -2px 0 var(--btn); }
+.lens-btn[data-mode="spatial"], .lens-link[data-mode="spatial"] { --btn: var(--c-spatial); }
+.lens-btn[data-mode="recon"], .lens-link[data-mode="recon"] { --btn: var(--c-recon); }
+.lens-btn[data-mode="nav"], .lens-link[data-mode="nav"] { --btn: var(--c-nav); }
+.lens-btn[data-mode="safety"], .lens-link[data-mode="safety"] { --btn: var(--c-safety); }
+.stage-caption { margin: 0; min-height: 4.8em; font-size: 0.9rem; color: var(--ink-2); }
+.stage-caption .live { font-family: var(--font-ui); font-size: 0.8rem; color: var(--ink-3); white-space: nowrap; }
+
+/* chapters */
+.kicker { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lens, var(--ink-3)); }
+.kicker .num { color: var(--lens, var(--ink-3)); }
+.kicker .zhk { font: 400 0.82rem/1 var(--font-zh); letter-spacing: 0.2em; text-transform: none; color: var(--ink-3); }
+.intro { padding-block: 52px 56px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 16px); }
+.intro h2, .lens h2 { margin: 12px 0 0; max-width: 22em; font: 400 clamp(1.45rem, 2.5vw, 1.95rem)/1.24 var(--font-display); text-wrap: balance; }
+.intro > p:not(.kicker) { margin: 18px 0 0; max-width: 36em; }
+
+.lens { position: relative; padding-block: 68px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 16px); }
+.lens[data-mode="spatial"], .page[data-mode="spatial"] { --lens: var(--c-spatial); }
+.lens[data-mode="recon"], .page[data-mode="recon"] { --lens: var(--c-recon); }
+.lens[data-mode="nav"], .page[data-mode="nav"] { --lens: var(--c-nav); }
+.lens[data-mode="safety"], .page[data-mode="safety"] { --lens: var(--c-safety); }
+.glyph { position: absolute; top: 26px; right: 0; z-index: 0; font: 400 clamp(6rem, 13vw, 9.5rem)/1 var(--font-brush); color: var(--glyph); pointer-events: none; user-select: none; }
+.lens > :not(.glyph) { position: relative; z-index: 1; }
+.statement { margin: 18px 0 0; max-width: 34em; font-size: 1.06rem; color: var(--ink-2); }
+
+.verses { margin: 24px 0 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.verse { margin: 0; padding-block: 18px; display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) auto; gap: 18px; align-items: start; }
+.verse + .verse { border-top: 1px dashed var(--rule); }
+.verse.west { grid-template-columns: 4.6rem minmax(0, 1fr); }
+.verse.wide { margin-top: 26px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.verse-label { padding-top: 5px; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+@media (max-width: 560px) {
+  .verse, .verse.west { grid-template-columns: minmax(0, 1fr) auto; }
+  .verse-label { grid-column: 1 / -1; padding-top: 0; }
+  .verse.west > div { grid-column: 1 / -1; }
+}
+
+.works { list-style: none; padding: 0; margin: 30px 0 0; display: grid; gap: 22px; }
+.works li { display: grid; grid-template-columns: 2.8rem minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.wid { font-size: 0.76rem; color: var(--lens, var(--ink-3)); }
+.wtitle { font-weight: 500; color: var(--ink); }
+a.wtitle { color: var(--ink); text-decoration: none; }
+a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, var(--ink-3)); }
+.wmeta { display: block; margin-top: 2px; font-size: 0.86rem; color: var(--ink-2); }
+.lens-foot { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; }
+.more { font-size: 0.9rem; }
+.more::after { content: " \2192"; }
+.to-world { font: 400 0.82rem/1 var(--font-ui); padding: 8px 12px; border: 1px solid var(--lens, var(--rule)); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; }
+@media (min-width: 960px) { .to-world { display: none; } }
+
+/* ---------- bands ---------- */
+.band { border-top: 1px solid var(--rule); padding-block: 56px; scroll-margin-top: var(--header-h); }
+.band-head { max-width: 46em; }
+.band-head h2 { margin: 0; font: 400 clamp(1.7rem, 3vw, 2.25rem)/1.15 var(--font-display); }
+.band-head p { margin: 10px 0 0; color: var(--ink-2); }
+
+.filters { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { --chip: var(--ink-3); display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink-2); cursor: pointer; font: 400 0.84rem/1.1 var(--font-ui); }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--chip); }
+.chip .n { font: 700 0.72rem/1 var(--font-ui); color: var(--ink-3); }
+.chip:hover { border-color: var(--ink-3); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.chip[aria-pressed="true"] .n { color: var(--paper); opacity: 0.75; }
+.chip[data-filter="spatial"], .pub[data-tag="spatial"] { --chip: var(--c-spatial); }
+.chip[data-filter="recon"], .pub[data-tag="recon"] { --chip: var(--c-recon); }
+.chip[data-filter="nav"], .pub[data-tag="nav"] { --chip: var(--c-nav); }
+.chip[data-filter="safety"], .pub[data-tag="safety"] { --chip: var(--c-safety); }
+.lead-toggle { display: inline-flex; gap: 8px; align-items: center; font: 400 0.88rem/1.4 var(--font-ui); color: var(--ink-2); cursor: pointer; }
+.lead-toggle input { width: 16px; height: 16px; accent-color: var(--ink); }
+.showing { margin: 16px 0 0; font-size: 0.78rem; color: var(--ink-3); }
+
+.pub-years { margin-top: 8px; }
+.year { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 18px; padding-block: 20px; border-top: 1px solid var(--rule); }
+.year h3 { margin: 0; font: 400 1.6rem/1.1 var(--font-display); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.pub { --chip: var(--ink-3); display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 12px; }
+.pub-id { font-size: 0.76rem; line-height: 1.75; color: var(--ink-3); }
+.pub-body { min-width: 0; }
+.pub-title { margin: 0; font-weight: 500; line-height: 1.42; }
+.pub-title a { color: var(--ink); text-decoration: none; }
+.pub-title a:hover { text-decoration: underline; text-decoration-color: var(--chip); }
+.pub-authors { margin: 3px 0 0; font-size: 0.9rem; color: var(--ink-2); }
+.pub-authors strong { color: var(--ink); font-weight: 700; }
+.pub-venue { margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; font-size: 0.86rem; color: var(--ink-2); }
+.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; letter-spacing: 0.03em; color: var(--ink-3); white-space: nowrap; }
+.tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--chip); }
+.badge { padding: 1px 8px; border: 1px solid var(--rule); border-radius: 999px; font-size: 0.68rem; color: var(--ink-2); white-space: nowrap; }
+.badge.oral { border-color: var(--c-recon); color: var(--c-recon); }
+.pub-link { font-size: 0.82rem; white-space: nowrap; }
+.legend { margin: 22px 0 0; font-size: 0.82rem; color: var(--ink-3); }
+@media (max-width: 640px) { .year { grid-template-columns: minmax(0, 1fr); gap: 8px; } }
+
+.news { list-style: none; padding: 0; margin: 22px 0 0; max-width: 62em; }
+.news li { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 16px; padding-block: 11px; border-top: 1px solid var(--rule); }
+.news li:last-child { border-bottom: 1px solid var(--rule); }
+.news time { font-size: 0.8rem; line-height: 1.95; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.news p { margin: 0; }
+@media (max-width: 520px) { .news li { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+
+.about-grid { margin-top: 26px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+@media (min-width: 900px) { .about-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr); gap: 44px; } }
+.about-grid h3 { margin: 0 0 14px; font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.timeline, .plain { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.timeline li { display: grid; gap: 1px; }
+.when { font-size: 0.76rem; color: var(--ink-3); }
+.what { font-weight: 700; }
+.where, .plain li { font-size: 0.93rem; color: var(--ink-2); }
+.plain b { color: var(--ink); font-weight: 700; }
+
+/* footer */
+.foot { border-top: 1px solid var(--rule); padding-block: 44px 60px; }
+.closing { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 22px; align-items: start; max-width: 40em; }
+.closing .zh-v { font-size: 1.3rem; }
+.foot-meta { margin-top: 30px; display: grid; gap: 6px; font-size: 0.82rem; color: var(--ink-3); }
+.foot-meta p { margin: 0; }
+
+/* ---------- life ---------- */
+.life-epigraph { max-width: 46em; margin-top: 22px; }
+.life-grid { margin-top: 30px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+@media (min-width: 880px) { .life-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; } }
+.life-card { position: relative; overflow: hidden; display: grid; gap: 14px; align-content: start; padding: 22px 20px 20px; border: 1px solid var(--rule); border-radius: 4px; background: color-mix(in srgb, var(--paper-2) 55%, var(--paper)); }
+.life-card > :not(.glyph-sm) { position: relative; }
+.glyph-sm { position: absolute; right: 10px; top: 4px; font: 400 4.8rem/1 var(--font-brush); color: var(--glyph); pointer-events: none; user-select: none; }
+.life-card h3 { margin: 0; font: 400 1.4rem/1.2 var(--font-display); }
+.life-tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.life-tags li { padding: 5px 9px; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper); font: 400 0.78rem/1 var(--font-ui); color: var(--ink-2); }
+.life-card p { margin: 0; }
+.motto { display: block; margin-top: 10px; font: 400 1rem/1.4 var(--font-zh); letter-spacing: 0.14em; color: var(--ink); }
+.motto-en { display: block; font-size: 0.86rem; color: var(--ink-3); }
+.aside { font-size: 0.86rem; color: var(--ink-3); }
+.mini-verse { margin: 0; padding-top: 14px; border-top: 1px dashed var(--rule); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: start; }
+.mini-verse .zh-v { font-size: 1.18rem; }
+.mini-verse .tr { font-size: 0.95rem; }
+
+/* ---------- photos ---------- */
+.photos { margin-top: 36px; }
+.photos-h { margin: 0 0 14px; font: 400 0.74rem/1.4 var(--font-ui); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.gallery { columns: 3 220px; column-gap: 12px; }
+.ph { display: block; width: 100%; margin: 0 0 12px; padding: 0; border: 0; background: none; cursor: zoom-in; break-inside: avoid; text-align: left; color: inherit; font: inherit; }
+.ph img { display: block; width: 100%; height: auto; border-radius: 3px; }
+.ph-cap { display: block; margin-top: 6px; font-size: 0.82rem; color: var(--ink-2); }
+.lightbox { width: min(92vw, 1100px); max-width: none; padding: 0; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); color: var(--ink); }
+.lightbox::backdrop { background: rgba(8, 16, 16, 0.72); }
+.lightbox img { display: block; width: 100%; max-height: 76vh; object-fit: contain; background: var(--paper-2); }
+.lightbox p { margin: 10px 16px 0; font-size: 0.9rem; color: var(--ink-2); }
+.lb-controls { display: flex; gap: 8px; justify-content: flex-end; padding: 12px 16px 14px; }
+.lb-open { margin-right: auto; align-self: center; font-size: 0.86rem; }
+.lb-controls button { padding: 8px 12px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; font: 400 0.84rem/1 var(--font-ui); }
+
+/* ---------- paper figures: a teaser or framework folded under the paper until opened ---------- */
+.figs { margin-top: 10px; }
+.figs > summary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 12px 5px 10px; border: 1px solid var(--rule); border-radius: 999px;
+  font: 400 0.8rem/1.2 var(--font-ui); color: var(--ink-2);
+  cursor: pointer; list-style: none; -webkit-user-select: none; user-select: none;
+}
+.figs > summary::-webkit-details-marker { display: none; }
+.figs > summary::before {
+  content: ""; flex: none; width: 0; height: 0;
+  border-left: 5px solid var(--fig-accent, var(--ink-3)); border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  transition: transform 0.15s ease;
+}
+.figs[open] > summary::before { transform: rotate(90deg); }
+.figs > summary:hover { border-color: var(--ink-3); color: var(--ink); }
+.figs[open] > summary { color: var(--ink); border-color: var(--fig-accent, var(--ink-3)); }
+.figs-body { display: grid; gap: 18px; margin-top: 14px; }
+.pub .figs-body { max-width: 860px; }
+.fig { margin: 0; }
+.fig-zoom { display: block; width: 100%; margin: 0; padding: 10px; border: 1px solid var(--rule); border-radius: 4px; background: var(--plate); filter: var(--plate-filter); cursor: zoom-in; }
+.fig-zoom:hover { border-color: var(--ink-3); }
+.fig-zoom img { display: block; width: 100%; height: auto; }
+.fig figcaption { margin-top: 8px; font-size: 0.86rem; line-height: 1.5; color: var(--ink-2); }
+.fig-kind { margin-right: 8px; font: 700 0.66rem/1 var(--font-ui); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fig-accent, var(--ink-3)); }
+.lens .figs { --fig-accent: var(--lens); }
+.pub .figs { --fig-accent: var(--chip); }
+@media (prefers-reduced-motion: reduce) { .figs > summary::before { transition: none; } }
+.lightbox.is-figure img { padding: 12px; background: var(--plate); filter: var(--plate-filter); }
+
+/* ---------- quotations: one quiet line, or folded behind the first line of the Chinese verse ---------- */
+.quote-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 22px !important; }
+.quote-line .q { font: italic 400 1.04rem/1.5 var(--font-display); color: var(--ink); }
+.quote-line cite { margin: 0; }
+.verses-fold { margin-top: 30px; }
+.verses-fold > summary {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px;
+  padding: 12px 0 0; border-top: 1px solid var(--rule);
+  cursor: pointer; list-style: none; -webkit-user-select: none; user-select: none;
+}
+.verses-fold > summary::-webkit-details-marker { display: none; }
+.verses-fold > summary::before {
+  content: ""; flex: none; align-self: center; width: 0; height: 0;
+  border-left: 5px solid var(--lens, var(--ink-3)); border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  transition: transform 0.15s ease;
+}
+.verses-fold[open] > summary::before { transform: rotate(90deg); }
+.vf-zh { font: 400 1.18rem/1.4 var(--font-brush); letter-spacing: 0.08em; color: var(--ink-2); }
+.vf-who { font: 400 0.72rem/1.4 var(--font-ui); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.verses-fold > summary:hover .vf-zh { color: var(--ink); }
+.verses-fold .verses { margin-top: 10px; border-top: 0; }
+@media (prefers-reduced-motion: reduce) { .verses-fold > summary::before { transition: none; } }
+
+.news .ne { display: inline-block; margin-right: 0.45em; }
+
+/* ---------- home: each perspective opens its own page ---------- */
+.lens h2 a { color: inherit; text-decoration: none; }
+.lens h2 a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--lens, var(--ink-3)); }
+.explore { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1px solid var(--lens, var(--rule)); border-radius: 999px; font: 400 0.86rem/1 var(--font-ui); color: var(--ink); text-decoration: none; }
+.explore::after { content: "\2192"; color: var(--lens, var(--ink-3)); }
+.explore:hover { background: color-mix(in srgb, var(--lens, var(--ink-3)) 10%, transparent); }
+
+/* ---------- perspective pages ---------- */
+.page-hero { display: grid; gap: 30px; padding-block: 40px 28px; }
+@media (min-width: 960px) {
+  .page-hero { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 56px; align-items: start; }
+  .page-hero-text { grid-column: 1; }
+  .page-stage { grid-area: auto; grid-column: 2; grid-row: 1; position: static; top: auto; }
+}
+.crumbs { margin: 0 0 18px; font: 400 0.8rem/1.4 var(--font-ui); color: var(--ink-3); }
+.crumbs a { color: var(--ink-3); text-decoration: none; }
+.crumbs a:hover { color: var(--ink); text-decoration: underline; }
+.crumbs span { margin-inline: 8px; }
+.page-hero h1 { margin: 12px 0 0; max-width: 18em; font: 400 clamp(1.8rem, 3.6vw, 2.7rem)/1.18 var(--font-display); text-wrap: balance; }
+.page-hero .statement { max-width: 40em; }
+.page-hero .statement + .statement { margin-top: 12px; }
+.lens-links { margin-top: 26px; max-width: 520px; }
+.lens-link { --btn: var(--ink); display: grid; justify-items: center; gap: 3px; padding: 7px 2px 8px; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink-2); text-decoration: none; font: 400 0.74rem/1.2 var(--font-ui); }
+.lens-link .g { font: 400 1.34rem/1.1 var(--font-brush); color: var(--btn); }
+.lens-link .l { max-width: 100%; white-space: nowrap; }
+@media (max-width: 440px) { .lens-link .l { font-size: 0.6rem; letter-spacing: -0.01em; } }
+.lens-link:hover { border-color: var(--ink-3); color: var(--ink); }
+.lens-link[aria-current="page"] { color: var(--ink); background: var(--paper-2); border-color: var(--btn); box-shadow: inset 0 -2px 0 var(--btn); }
+.page-stage .stage-frame { aspect-ratio: 4 / 3; max-height: 420px; }
+@media (min-width: 960px) { .page-stage .stage-frame { aspect-ratio: auto; height: 380px; } }
+.page-stage .stage-caption { min-height: 0; }
+
+.papers { padding-block: 16px 40px; }
+.sec-h { margin: 0 0 6px; font: 400 0.74rem/1.4 var(--font-ui); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.paper { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 12px; padding-block: 30px; border-top: 1px solid var(--rule); }
+.paper-id { margin: 0; font: 700 0.76rem/1.75 var(--font-ui); color: var(--lens, var(--ink-3)); }
+.paper-body { min-width: 0; }
+.paper h3 { margin: 0; font: 500 1.18rem/1.42 var(--font-body); }
+.paper h3 a { color: var(--ink); text-decoration: none; }
+.paper h3 a:hover { text-decoration: underline; text-decoration-color: var(--lens, var(--ink-3)); }
+.paper-authors { margin: 4px 0 0; font-size: 0.92rem; color: var(--ink-2); }
+.paper-authors strong { color: var(--ink); font-weight: 700; }
+.paper-meta { margin: 4px 0 0; font-size: 0.86rem; color: var(--ink-2); }
+.paper-meta a { color: var(--link); }
+.paper-links { margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.paper-links a { font: 400 0.8rem/1 var(--font-ui); padding: 6px 11px; border: 1px solid var(--rule); border-radius: 999px; text-decoration: none; color: var(--ink-2); }
+.paper-links a:hover { border-color: var(--lens, var(--ink-3)); color: var(--ink); }
+.paper-summary { margin: 14px 0 0; max-width: 60em; color: var(--ink-2); }
+.materials { display: grid; gap: 26px; margin-top: 22px; max-width: 900px; }
+.demo { display: grid; gap: 22px; }
+.vid-fig { margin: 0; }
+.vid { display: block; width: 100%; height: auto; max-width: 100%; aspect-ratio: 16 / 9; background: #0b0b0b; border-radius: 4px; }
+.video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 560px) { .video-grid { grid-template-columns: minmax(0, 1fr); } }
+.poster-link { display: block; }
+.poster-link img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 4px; background: var(--plate); filter: var(--plate-filter); }
+.poster-link:hover img { border-color: var(--ink-3); }
+.page-verses { padding-block: 0 56px; }
+.page-verses .verses-fold { margin-top: 0; max-width: 60em; }
+@media (max-width: 640px) { .paper { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+
+</style>
+<script>try{var t=localStorage.getItem("jh-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html"><span class="seal-sm" aria-hidden="true">黄</span><span>Jiaxin Huang</span></a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="index.html#perspectives">Research</a>
+      <a href="index.html#publications">Publications</a>
+      <a href="index.html#news">News</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#life">Life</a>
+      <a href="cv.pdf" target="_blank" rel="noopener">CV</a>
+    </nav>
+    <button id="theme-btn" class="theme-btn" type="button" aria-label="Switch colour theme">暗</button>
+  </div>
+</header>
+
+<main id="top" class="page" data-mode="recon">
+  <section class="wrap page-hero">
+    <div class="page-hero-text">
+      <p class="crumbs"><a href="index.html">Jiaxin Huang</a><span aria-hidden="true">/</span><a href="index.html#perspectives">Research</a></p>
+      <p class="kicker"><span class="num">02</span>3D/4D reconstruction<span class="zhk" lang="zh-Hans">三维/四维重建</span></p>
+      <h1>What in a scene changes over time, what stays, and how to reconstruct?</h1>
+      <p class="statement">A dynamic scene mixes structure that stays fixed with content that moves, and a reconstruction has to keep the two apart over time.</p><p class="statement">UrbanGS separates them with 2D semantic guidance: static Gaussians stay consistent across frames, and each dynamic Gaussian carries a learnable time embedding that models its own deformation. Mirage2Matter reconstructs a scene from multi-view video with Gaussian splatting, recovers physically plausible properties with generative models, and aligns the scale to the real world, which gives an editable, physically grounded world model that trains vision-language-action policies for zero-shot transfer. With collaborators I also survey video world models.</p>
+      <nav class="lenses lens-links" aria-label="Perspectives"><a class="lens-link" href="index.html" data-mode="world"><span class="g" lang="zh-Hans">山</span><span class="l">Home</span></a><a class="lens-link" href="spatial.html" data-mode="spatial"><span class="g" lang="zh-Hans">观</span><span class="l">Reason</span></a><a class="lens-link" href="reconstruction.html" data-mode="recon" aria-current="page"><span class="g" lang="zh-Hans">构</span><span class="l">Reconstruct</span></a><a class="lens-link" href="navigation.html" data-mode="nav"><span class="g" lang="zh-Hans">行</span><span class="l">Navigate</span></a><a class="lens-link" href="safety.html" data-mode="safety"><span class="g" lang="zh-Hans">守</span><span class="l">Guard</span></a></nav>
+    </div>
+    <aside class="stage page-stage" aria-label="Mount Lu seen through this perspective">
+      <div class="stage-frame">
+        <canvas id="world" tabindex="0" role="img" data-start-mode="recon" aria-label="A point cloud of a mountain ridge drawn as soft Gaussian splats, with moving mist particles. Drag or use the arrow keys to turn it."></canvas>
+        <p class="stage-view" id="view-caption" lang="zh-Hans" aria-hidden="true"></p>
+        <p class="stage-hint" aria-hidden="true">drag to turn the mountain</p>
+        <noscript><p class="stage-noscript">The interactive mountain needs JavaScript.</p></noscript>
+      </div>
+      <p class="stage-caption" id="stage-caption">The same mountain as Gaussian splats: the static scene in ink, the moving mist in green, kept apart over time. <span class="live" data-live></span></p>
+    </aside>
+  </section>
+  <section class="wrap papers" aria-labelledby="h-papers">
+    <h2 class="sec-h" id="h-papers">Papers</h2>
+<article class="paper" id="S1">
+<p class="paper-id">S1</p>
+<div class="paper-body">
+<h3><a href="https://arxiv.org/abs/2412.03473" target="_blank" rel="noopener"><b class="m">UrbanGS</b>: Semantic-Guided Gaussian Splatting for Urban Scene Reconstruction</a></h3>
+<p class="paper-authors">Ziwen Li<sup>*</sup>, <strong>Jiaxin Huang</strong><sup>*</sup>, Runnan Chen, Yunlong Che, Yandong Guo, Tongliang Liu, Fakhri Karray, Mingming Gong</p><p class="paper-meta">arXiv 2024 · co-first author</p>
+<p class="paper-links"><a href="https://arxiv.org/abs/2412.03473" target="_blank" rel="noopener">arXiv</a></p><p class="paper-summary">Semantic-guided Gaussian splatting for urban scenes. 2D semantic maps separate static regions from potentially dynamic objects; static Gaussians keep temporal consistency with a k-nearest-neighbour regularization for low-texture surfaces such as roads, and each dynamic Gaussian carries a learnable time embedding that models its own deformation.</p>
+</div>
+</article>
+<article class="paper" id="S2">
+<p class="paper-id">S2</p>
+<div class="paper-body">
+<h3><a href="https://arxiv.org/abs/2602.00096" target="_blank" rel="noopener"><b class="m">Mirage2Matter</b>: A Physically Grounded Gaussian World Model from Video</a></h3>
+<p class="paper-authors">Zhengqing Gao, Ziwen Li, Xin Wang, <strong>Jiaxin Huang</strong>, Zhenyang Ren, Mingkai Shao, Hanlue Zhang, Tianyu Huang, Yongkang Cheng, Yandong Guo, Runqi Lin, Yuanyuan Wang, Tongliang Liu, Kun Zhang, Mingming Gong</p><p class="paper-meta">arXiv 2026</p>
+<p class="paper-links"><a href="https://arxiv.org/abs/2602.00096" target="_blank" rel="noopener">arXiv</a></p><p class="paper-summary">A physically grounded Gaussian world model built from multi-view video and off-the-shelf assets: 3D Gaussian splatting reconstructs the scene, generative models recover physically plausible properties, and a calibration target aligns the scale to the real world. Vision-language-action policies trained on its simulated data transfer zero-shot to real tasks.</p>
+</div>
+</article>
+<article class="paper" id="S9">
+<p class="paper-id">S9</p>
+<div class="paper-body">
+<h3>Predicting the World via Video Representation: A Comprehensive Survey on Video World Models</h3>
+<p class="paper-authors">Jiaxin Yan, Chaoning Zhang, Xudong Wang, Pengcheng Zheng, Ya Wen, Qigan Sun, <strong>Jiaxin Huang</strong>, Shuxu Chen, Yang Yang, Hyundong Shin</p><p class="paper-meta">Preprints 2026</p>
+<p class="paper-summary">A survey of video world models that predict the world through video representations.</p>
+</div>
+</article>
+  </section>
+  <section class="wrap page-verses">
+<details class="verses-fold">
+          <summary><span class="vf-zh" lang="zh-Hans">自其变者而观之</span><span class="vf-who">Su Shi · Aristotle</span></summary>
+          <div class="verses">
+            <figure class="verse east">
+              <span class="verse-label">East · 东</span>
+              <figcaption>
+                <p class="tr">Seen through what changes, heaven and earth do not last the blink of an eye; seen through what does not change, things and I are both without end.</p>
+                <cite>Su Shi 苏轼, “Former Ode on the Red Cliff” 《赤壁赋》, 1082</cite>
+              </figcaption>
+              <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">盖，将，自，其，变，者，而，观，之，则，天，地，曾，不，能，以，一，瞬，自，其，不，变，者，而，观，之，则，物，与，我，皆，无，尽，也。</span><span class="cols" aria-hidden="true"><span class="col"><span>盖</span></span><span class="col"><span>将</span></span><span class="col"><span>自</span></span><span class="col"><span>其</span></span><span class="col"><span>变</span></span><span class="col"><span>者</span></span><span class="col"><span>而</span></span><span class="col"><span>观</span></span><span class="col"><span>之</span></span><span class="col"><span>则</span></span><span class="col"><span>天</span></span><span class="col"><span>地</span></span><span class="col"><span>曾</span></span><span class="col"><span>不</span></span><span class="col"><span>能</span></span><span class="col"><span>以</span></span><span class="col"><span>一</span></span><span class="col"><span>瞬</span></span><span class="col"><span>自</span></span><span class="col"><span>其</span></span><span class="col"><span>不</span></span><span class="col"><span>变</span></span><span class="col"><span>者</span></span><span class="col"><span>而</span></span><span class="col"><span>观</span></span><span class="col"><span>之</span></span><span class="col"><span>则</span></span><span class="col"><span>物</span></span><span class="col"><span>与</span></span><span class="col"><span>我</span></span><span class="col"><span>皆</span></span><span class="col"><span>无</span></span><span class="col"><span>尽</span></span><span class="col"><span>也</span></span></span></blockquote>
+            </figure>
+            <figure class="verse west">
+              <span class="verse-label">West · 西</span>
+              <div>
+                <p class="tr">For this is what time is: the number of motion with respect to before and after.</p>
+                <cite>Aristotle, <i>Physics</i> IV.11, 219b</cite>
+              </div>
+            </figure>
+          </div>
+        </details>
+  </section>
+  <dialog class="lightbox" id="lightbox" aria-label="Image viewer">
+    <img id="lb-img" alt="">
+    <p id="lb-cap"></p>
+    <div class="lb-controls">
+      <a class="lb-open" id="lb-open" href="#" target="_blank" rel="noopener">Open full size</a>
+      <button id="lb-prev" type="button">Previous</button>
+      <button id="lb-next" type="button">Next</button>
+      <button id="lb-close" type="button">Close</button>
+    </div>
+  </dialog>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <figure class="closing">
+      <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">学而不思则罔，思而不学则殆。</span><span class="cols" aria-hidden="true"><span class="col"><span>学</span><span>而</span><span>不</span><span>思</span><span>则</span><span>罔</span></span><span class="col"><span>思</span><span>而</span><span>不</span><span>学</span><span>则</span><span>殆</span></span></span></blockquote>
+      <figcaption>
+        <p class="tr">Learning without thought is labour lost; thought without learning is perilous.</p>
+        <cite>Confucius 孔子, <i>Analects</i> 《论语》 2.15 (tr. James Legge)</cite>
+      </figcaption>
+    </figure>
+    <div class="foot-meta">
+      <p>Jiaxin Huang 黄佳欣 · Machine Learning Department, MBZUAI, Abu Dhabi · jiaxin.huang@mbzuai.ac.ae</p>
+      <p>The four perspective colours are mineral pigments of Chinese blue-green landscape painting: 石青 azurite, 石绿 malachite, 赭石 ochre and 胭脂 rouge.</p>
+      <p>Last updated October 2026.</p>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var wideMQ = window.matchMedia("(min-width: 960px)");
+  var darkMQ = window.matchMedia("(prefers-color-scheme: dark)");
+  var world = null;
+
+  /* ---------- theme toggle (明 light / 暗 dark) ---------- */
+  var THEME_KEY = "jh-theme";
+  var themeBtn = document.getElementById("theme-btn");
+  function isDark() {
+    var t = root.getAttribute("data-theme");
+    return t ? t === "dark" : darkMQ.matches;
+  }
+  function syncThemeBtn() {
+    if (!themeBtn) return;
+    var d = isDark();
+    themeBtn.textContent = d ? "明" : "暗";
+    themeBtn.setAttribute("aria-label", d ? "Switch to light theme" : "Switch to dark theme");
+  }
+  if (themeBtn) {
+    themeBtn.addEventListener("click", function () {
+      var next = isDark() ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* storage unavailable */ }
+      syncThemeBtn();
+      if (world) world.refresh();
+    });
+  }
+  var onScheme = function () { syncThemeBtn(); if (world) world.refresh(); };
+  if (darkMQ.addEventListener) darkMQ.addEventListener("change", onScheme);
+  else if (darkMQ.addListener) darkMQ.addListener(onScheme);
+  syncThemeBtn();
+
+  /* ---------- copy e-mail ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function (btn) {
+    var label = btn.textContent;
+    btn.addEventListener("click", function () {
+      var text = btn.getAttribute("data-copy");
+      var target = document.getElementById(btn.getAttribute("aria-controls"));
+      function show(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = label; }, 1600); }
+      function fallback() {
+        if (target) {
+          var range = document.createRange();
+          range.selectNodeContents(target);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+        show("Selected");
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { show("Copied"); }, fallback);
+        } else { fallback(); }
+      } catch (e) { fallback(); }
+    });
+  });
+
+  /* ---------- publication filters ---------- */
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+  var leadOnly = document.getElementById("lead-only");
+  var pubs = Array.prototype.slice.call(document.querySelectorAll(".pub"));
+  var years = Array.prototype.slice.call(document.querySelectorAll(".year"));
+  var countEl = document.getElementById("pub-count");
+  var filter = "all";
+  function applyFilter() {
+    var shown = 0;
+    pubs.forEach(function (li) {
+      var ok = (filter === "all" || li.getAttribute("data-tag") === filter) &&
+               (!leadOnly || !leadOnly.checked || li.getAttribute("data-lead") === "1");
+      li.hidden = !ok;
+      if (ok) shown++;
+    });
+    years.forEach(function (y) { y.hidden = !y.querySelector(".pub:not([hidden])"); });
+    if (countEl) countEl.textContent = "Showing " + shown + " of " + pubs.length;
+  }
+  function setFilter(f) {
+    filter = f;
+    chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c.getAttribute("data-filter") === f)); });
+    applyFilter();
+  }
+  chips.forEach(function (c) { c.addEventListener("click", function () { setFilter(c.getAttribute("data-filter")); }); });
+  if (leadOnly) leadOnly.addEventListener("change", applyFilter);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-set-filter]"), function (a) {
+    a.addEventListener("click", function () { setFilter(a.getAttribute("data-set-filter")); });
+  });
+
+  /* ---------- the world: Mount Lu as a point cloud ---------- */
+  world = (function () {
+    var canvas = document.getElementById("world");
+    if (!canvas || !canvas.getContext) return null;
+    var ctx = canvas.getContext("2d");
+    var viewCap = document.getElementById("view-caption");
+    var stageCap = document.getElementById("stage-caption");
+    var buttons = Array.prototype.slice.call(document.querySelectorAll(".lens-btn"));
+
+    var seed = 20260914;
+    function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+    function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+
+    // A long ridge along x with one main peak: a ridge seen across, a peak seen from the side.
+    function heightAt(x, z) {
+      var ridge = Math.exp(-(z * z) / 0.11) * (0.30 + 0.09 * Math.cos(3.1 * x + 0.4) + 0.05 * Math.sin(7.3 * x));
+      var peak = 0.64 * Math.exp(-((x - 0.35) * (x - 0.35)) / 0.05 - (z * z) / 0.05);
+      var west = 0.32 * Math.exp(-((x + 0.85) * (x + 0.85)) / 0.06 - ((z - 0.05) * (z - 0.05)) / 0.06);
+      var east = 0.26 * Math.exp(-((x - 1.15) * (x - 1.15)) / 0.05 - ((z + 0.05) * (z + 0.05)) / 0.05);
+      var ends = Math.max(0, 1 - Math.pow(Math.abs(x) / 1.72, 6));
+      var tex = 0.022 * Math.sin(11 * x + 3 * z) * Math.cos(9 * z - 2 * x) + 0.012 * Math.sin(23 * x * z + 1.3);
+      return Math.max(0, (ridge + peak + west + east + tex) * ends);
+    }
+
+    // classes: 0 ground, 1 slope, 2 main peak, 3 west peak, 4 east peak, 5 temple
+    var pts = [];
+    var NX = 100, NZ = 46;
+    for (var i = 0; i < NX; i++) {
+      for (var k = 0; k < NZ; k++) {
+        var x = -1.75 + 3.5 * (i + 0.15 + rnd() * 0.7) / NX;
+        var z = -0.95 + 1.9 * (k + 0.15 + rnd() * 0.7) / NZ;
+        var y = heightAt(x, z);
+        var cls = y < 0.045 ? 0 : 1;
+        if (cls === 0 && rnd() > 0.3) continue;
+        if (cls === 1) {
+          if (Math.sqrt((x - 0.35) * (x - 0.35) + z * z) < 0.27 && y > 0.5) cls = 2;
+          else if (Math.sqrt((x + 0.85) * (x + 0.85) + (z - 0.05) * (z - 0.05)) < 0.25 && y > 0.2) cls = 3;
+          else if (Math.sqrt((x - 1.15) * (x - 1.15) + (z + 0.05) * (z + 0.05)) < 0.23 && y > 0.17) cls = 4;
+        }
+        pts.push([x, y, z, cls]);
+      }
+    }
+    // Xilin Temple: a small pagoda at the front foothill.
+    var TX = -0.42, TZ = 0.52, TY = heightAt(TX, TZ);
+    for (var l = 0; l < 6; l++) {
+      var half = 0.058 - l * 0.0075, yy = TY + 0.012 + l * 0.034;
+      for (var e = 0; e < 4; e++) {
+        for (var s = 0; s < 5; s++) {
+          var u = -half + (2 * half) * s / 5, px, pz;
+          if (e === 0) { px = TX + u; pz = TZ - half; }
+          else if (e === 1) { px = TX + half; pz = TZ + u; }
+          else if (e === 2) { px = TX - u; pz = TZ + half; }
+          else { px = TX - half; pz = TZ - u; }
+          pts.push([px, yy, pz, 5]);
+        }
+      }
+    }
+    for (var sp = 0; sp < 5; sp++) pts.push([TX, TY + 0.22 + sp * 0.014, TZ, 5]);
+
+    var N = pts.length;
+    var sx = new Float32Array(N), sy = new Float32Array(N), sd = new Float32Array(N);
+    var order = new Uint16Array(N);
+    for (var q = 0; q < N; q++) order[q] = q;
+    var nvec = new Float32Array(N * 3);
+    for (var r = 0; r < N * 3; r++) nvec[r] = rnd() * 2 - 1;
+
+    // class centroids (for the spatial-reasoning query)
+    var cent = {};
+    [3, 4].forEach(function (c) {
+      var ax = 0, ay = 0, az = 0, n = 0;
+      pts.forEach(function (p) { if (p[3] === c) { ax += p[0]; ay += p[1]; az += p[2]; n++; } });
+      cent[c] = n ? [ax / n, ay / n + 0.08, az / n] : [0, 0.5, 0];
+    });
+
+    // moving mist (the dynamic part of the 4D scene)
+    var mist = [];
+    for (var m = 0; m < 150; m++) mist.push({ x0: -1.9 + 3.8 * rnd(), y0: 0.14 + 0.36 * rnd(), z0: -0.75 + 1.5 * rnd(), v: 0.05 + 0.07 * rnd(), ph: rnd() * 6.2832 });
+    function mistAt(o, time) {
+      var xx = ((o.x0 + 1.9 + o.v * time) % 3.8 + 3.8) % 3.8 - 1.9;
+      return [xx, o.y0 + 0.03 * Math.sin(0.8 * time + o.ph), o.z0 + 0.06 * Math.sin(0.45 * time + 2 * o.ph)];
+    }
+
+    // navigation route: leave the temple, climb to the ridge, stop at the highest peak
+    var way = [[-0.42, 0.68], [-0.33, 0.44], [-0.2, 0.26], [-0.04, 0.12], [0.14, 0.05], [0.35, 0.0]];
+    var path = [];
+    for (var w = 0; w < way.length - 1; w++) {
+      var a0 = way[w], b0 = way[w + 1];
+      var len = Math.sqrt((b0[0] - a0[0]) * (b0[0] - a0[0]) + (b0[1] - a0[1]) * (b0[1] - a0[1]));
+      var nseg = Math.max(1, Math.round(len / 0.024));
+      for (var j = 0; j < nseg; j++) {
+        var f = j / nseg, wx = a0[0] + (b0[0] - a0[0]) * f, wz = a0[1] + (b0[1] - a0[1]) * f;
+        path.push([wx, heightAt(wx, wz) + 0.018, wz]);
+      }
+    }
+    var lastW = way[way.length - 1];
+    path.push([lastW[0], heightAt(lastW[0], lastW[1]) + 0.018, lastW[1]]);
+
+    // two speakers for the egocentric query "the small peak on my left"
+    var VIEWS = [
+      { name: "A", pos: [-0.15, 0.62, 1.32], target: 3, side: "west" },
+      { name: "B", pos: [0.45, 0.62, -1.32], target: 4, side: "east" }
+    ];
+
+    var MODES = {
+      world:   { pitch: 0.36, auto: true,  glyph: "山", name: "the whole world" },
+      spatial: { yaw: 0.55, pitch: 0.62, auto: false, glyph: "观", name: "spatial reasoning" },
+      recon:   { pitch: 0.32, auto: true,  glyph: "构", name: "3D/4D reconstruction" },
+      nav:     { yaw: -0.42, pitch: 0.6, auto: false, glyph: "行", name: "embodied navigation" },
+      safety:  { pitch: 0.38, auto: true,  glyph: "守", name: "safety" }
+    };
+    var CAPTIONS = {
+      world: "Mount Lu as a point cloud. Su Shi saw a ridge from one side and a peak from another. Drag to turn it, or pick a perspective.",
+      spatial: "“The small peak on my left” has two answers: the west peak for speaker A, the east peak for speaker B. A 3D model has to infer where the speaker stands. Tap the mountain to switch speakers.",
+      recon: "The same mountain as Gaussian splats: the static scene in ink, the moving mist in green, kept apart over time. <span class=\"live\" data-live></span>",
+      nav: "Instruction: “Leave the temple, climb to the ridge, and stop at the highest peak.” The agent acts one step at a time. <span class=\"live\" data-live></span>",
+      safety: "Protected frames look unchanged to people (main view). A 4D reconstructor fed the same frames recovers a broken scene (inset)."
+    };
+
+    var W = 1, H = 1, DPR = 1, F = 1, CX = 0, CY = 0, CAMD = 3.5;
+    var yaw = -0.35, pitch = 0.36, tYaw = yaw, tPitch = pitch;
+    var mode = "world", modeT0 = 0, time = 0, lastTS = 0;
+    var dragging = false, moved = false, lastX = 0, lastY = 0, downX = 0, downY = 0, lastInteract = -1e9;
+    var spatialIdx = 0, spatialManual = false;
+    var running = false, visible = true, lastView = "", liveEl = null, lastLive = "";
+    var C = {};
+
+    function readColors() {
+      var cs = getComputedStyle(root);
+      ["--ink", "--ink-2", "--ink-3", "--paper", "--rule", "--c-spatial", "--c-recon", "--c-nav", "--c-safety", "--seal"].forEach(function (key) {
+        C[key] = (cs.getPropertyValue(key) || "").trim() || "#888888";
+      });
+    }
+
+    function resize() {
+      var rect = canvas.getBoundingClientRect();
+      DPR = Math.min(2, window.devicePixelRatio || 1);
+      W = Math.max(1, Math.round(rect.width * DPR));
+      H = Math.max(1, Math.round(rect.height * DPR));
+      canvas.width = W; canvas.height = H;
+      F = Math.min(W * 0.92, H * 1.12);
+      CX = W * 0.5; CY = H * 0.56;
+    }
+
+    function projAll(view, distort) {
+      var cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), spn = Math.sin(pitch);
+      var dmin = 1e9, dmax = -1e9;
+      for (var i = 0; i < N; i++) {
+        var p = pts[i], x = p[0], y = p[1], z = p[2];
+        if (distort) {
+          var amp = 0.2 * (0.7 + 0.3 * Math.sin(time * 0.9 + i));
+          x += nvec[i * 3] * amp; y += nvec[i * 3 + 1] * amp * 0.6; z += nvec[i * 3 + 2] * amp;
+        }
+        var xr = cyw * x - syw * z, zr = syw * x + cyw * z, yc = y - 0.22;
+        var yr = cp * yc - spn * zr, zr2 = spn * yc + cp * zr;
+        var d = CAMD - zr2, sc = view.F / d;
+        sx[i] = view.CX + xr * sc; sy[i] = view.CY - yr * sc; sd[i] = d;
+        if (d < dmin) dmin = d;
+        if (d > dmax) dmax = d;
+      }
+      return [dmin, dmax];
+    }
+    function projOne(x, y, z, view) {
+      var cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), spn = Math.sin(pitch);
+      var xr = cyw * x - syw * z, zr = syw * x + cyw * z, yc = y - 0.22;
+      var yr = cp * yc - spn * zr, zr2 = spn * yc + cp * zr;
+      var d = CAMD - zr2, sc = view.F / d;
+      return [view.CX + xr * sc, view.CY - yr * sc, d];
+    }
+
+    function navStep() {
+      if (reduceMotion) return path.length - 1;
+      var per = 0.11, hold = 1.4, total = path.length * per + hold;
+      var local = ((time - modeT0) % total + total) % total;
+      return Math.min(path.length - 1, Math.floor(local / per));
+    }
+
+    function label(text, x, y, color, align) {
+      ctx.globalAlpha = 1;
+      ctx.font = "700 " + Math.round(11 * DPR) + "px Lato, 'Helvetica Neue', Arial, sans-serif";
+      ctx.textAlign = align || "left";
+      ctx.fillStyle = color;
+      ctx.fillText(text, x, y);
+      ctx.textAlign = "left";
+    }
+
+    function draw() {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      var view = { F: F, CX: CX, CY: CY };
+      var dr = projAll(view, false);
+      order.sort(function (a, b) { return sd[b] - sd[a]; });
+      var base = Math.max(1, W / 380), span = Math.max(1e-6, dr[1] - dr[0]);
+      var v = VIEWS[spatialIdx];
+      var splat = mode === "recon";
+      for (var n = 0; n < N; n++) {
+        var i = order[n], cls = pts[i][3];
+        var near = 1 - (sd[i] - dr[0]) / span;
+        var col = C["--ink"], alpha = 0.16 + 0.62 * near, size = base * (0.75 + 0.85 * near);
+        if (cls === 0) alpha *= 0.42;
+        if (cls === 5) { col = C["--seal"]; alpha = 0.55 + 0.4 * near; size *= 1.1; }
+        if (mode === "spatial") {
+          if (cls === v.target) { col = C["--c-spatial"]; alpha = 0.95; size *= 1.5; }
+          else if (cls !== 5) alpha *= 0.5;
+        } else if (mode === "recon") {
+          if (cls !== 5) col = C["--ink-2"];
+        } else if (mode === "nav") {
+          if (cls !== 5) alpha *= 0.7;
+        }
+        ctx.fillStyle = col;
+        if (splat) {
+          ctx.globalAlpha = Math.min(1, alpha) * 0.3;
+          ctx.beginPath(); ctx.arc(sx[i], sy[i], size * 1.9, 0, 6.2832); ctx.fill();
+        } else {
+          ctx.globalAlpha = Math.min(1, alpha);
+          ctx.fillRect(sx[i] - size / 2, sy[i] - size / 2, size, size);
+        }
+      }
+
+      if (mode === "world" || mode === "recon") {
+        ctx.fillStyle = mode === "recon" ? C["--c-recon"] : C["--ink-3"];
+        for (var mm = 0; mm < mist.length; mm++) {
+          var mp = mistAt(mist[mm], time), pr = projOne(mp[0], mp[1], mp[2], view);
+          ctx.globalAlpha = mode === "recon" ? 0.75 : 0.2;
+          ctx.beginPath(); ctx.arc(pr[0], pr[1], (mode === "recon" ? 2.4 : 1.5) * base * (CAMD / pr[2]), 0, 6.2832); ctx.fill();
+        }
+      }
+
+      if (mode === "spatial") {
+        var other = VIEWS[1 - spatialIdx];
+        var vp = projOne(v.pos[0], v.pos[1], v.pos[2], view);
+        var op = projOne(other.pos[0], other.pos[1], other.pos[2], view);
+        var tc = cent[v.target], tp = projOne(tc[0], tc[1], tc[2], view);
+        ctx.strokeStyle = C["--c-spatial"]; ctx.lineWidth = 1.3 * base;
+        ctx.globalAlpha = 0.85; ctx.setLineDash([4 * base, 4 * base]);
+        ctx.beginPath(); ctx.moveTo(vp[0], vp[1]); ctx.lineTo(tp[0], tp[1]); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = C["--c-spatial"];
+        ctx.globalAlpha = 0.35; ctx.beginPath(); ctx.arc(op[0], op[1], 4 * base, 0, 6.2832); ctx.fill();
+        ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(vp[0], vp[1], 5.5 * base, 0, 6.2832); ctx.fill();
+        label("speaker " + v.name, vp[0] + 9 * base, vp[1] + 4 * base, C["--ink"]);
+        label(other.name, op[0] + 8 * base, op[1] + 4 * base, C["--ink-3"]);
+        label("“on my left” = " + v.side + " peak", tp[0], tp[1] - 14 * base, C["--c-spatial"], "center");
+      }
+
+      if (mode === "nav") {
+        var k = navStep();
+        ctx.strokeStyle = C["--c-nav"]; ctx.lineWidth = 1.2 * base;
+        ctx.globalAlpha = 0.45; ctx.setLineDash([3 * base, 4 * base]); ctx.beginPath();
+        for (var a = 0; a < path.length; a++) { var pa = projOne(path[a][0], path[a][1], path[a][2], view); if (a) ctx.lineTo(pa[0], pa[1]); else ctx.moveTo(pa[0], pa[1]); }
+        ctx.stroke(); ctx.setLineDash([]);
+        ctx.globalAlpha = 1; ctx.lineWidth = 2.2 * base; ctx.beginPath();
+        for (var b = 0; b <= k; b++) { var pb = projOne(path[b][0], path[b][1], path[b][2], view); if (b) ctx.lineTo(pb[0], pb[1]); else ctx.moveTo(pb[0], pb[1]); }
+        ctx.stroke();
+        var g = path[path.length - 1], gp = projOne(g[0], g[1], g[2], view);
+        ctx.globalAlpha = 0.9; ctx.lineWidth = 1.3 * base; ctx.beginPath(); ctx.arc(gp[0], gp[1], 9 * base, 0, 6.2832); ctx.stroke();
+        label("goal", gp[0] + 13 * base, gp[1] - 6 * base, C["--c-nav"]);
+        var ag = path[k], ap = projOne(ag[0], ag[1], ag[2], view);
+        ctx.fillStyle = C["--c-nav"]; ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(ap[0], ap[1], 4.6 * base, 0, 6.2832); ctx.fill();
+        var st = path[0], spp = projOne(st[0], st[1], st[2], view);
+        label("start", spp[0] - 12 * base, spp[1] + 18 * base, C["--ink-2"], "center");
+      }
+
+      if (mode === "safety") {
+        var iw = W * 0.42, ih = H * 0.36, ix = W - iw - 12 * DPR, iy = H - ih - 28 * DPR;
+        ctx.globalAlpha = 0.94; ctx.fillStyle = C["--paper"]; ctx.fillRect(ix, iy, iw, ih);
+        ctx.globalAlpha = 1; ctx.strokeStyle = C["--c-safety"]; ctx.lineWidth = DPR; ctx.strokeRect(ix + 0.5, iy + 0.5, iw - 1, ih - 1);
+        var iv = { F: Math.min(iw * 0.86, ih * 1.02), CX: ix + iw / 2, CY: iy + ih * 0.62 };
+        projAll(iv, true);
+        ctx.save(); ctx.beginPath(); ctx.rect(ix + 1, iy + 1, iw - 2, ih - 2); ctx.clip();
+        ctx.fillStyle = C["--c-safety"]; ctx.globalAlpha = 0.55;
+        var dot = Math.max(1, 1.5 * DPR);
+        for (var t2 = 0; t2 < N; t2 += 2) ctx.fillRect(sx[t2] - dot / 2, sy[t2] - dot / 2, dot, dot);
+        ctx.restore();
+        label("what a 4D model recovers", ix + 8 * DPR, iy + 16 * DPR, C["--c-safety"]);
+        label("what people see: unchanged", 14 * DPR, H - 12 * DPR, C["--ink-2"]);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function viewText() {
+      if (mode !== "world") return MODES[mode].glyph + " · " + MODES[mode].name;
+      var c = Math.abs(Math.cos(yaw));
+      if (c > 0.8) return "横看成岭 · seen across, a ridge";
+      if (c < 0.35) return "侧成峰 · from the side, a peak";
+      return "远近高低各不同 · never the same twice";
+    }
+    function updateCaptions() {
+      var vt = viewText();
+      if (viewCap && vt !== lastView) { viewCap.textContent = vt; lastView = vt; }
+      if (liveEl) {
+        var txt = "";
+        if (mode === "recon") txt = "t = " + time.toFixed(1) + " s";
+        else if (mode === "nav") txt = "Step " + (navStep() + 1) + " of " + path.length;
+        if (txt !== lastLive) { liveEl.textContent = txt; lastLive = txt; }
+      }
+    }
+
+    function frame(ts) {
+      running = false;
+      if (!visible) return;
+      var dt = lastTS ? Math.min(0.05, (ts - lastTS) / 1000) : 0.016;
+      lastTS = ts;
+      if (!reduceMotion) time += dt;
+      var cfg = MODES[mode];
+      if (cfg.auto && !reduceMotion && !dragging && ts - lastInteract > 2500) { yaw += dt * 0.16; tYaw = yaw; }
+      if (mode === "spatial" && !reduceMotion && !spatialManual) spatialIdx = Math.floor((time - modeT0) / 3.4) % 2;
+      var kk = 1 - Math.exp(-dt * 5);
+      yaw += (tYaw - yaw) * kk; pitch += (tPitch - pitch) * kk;
+      draw(); updateCaptions();
+      var settling = Math.abs(tYaw - yaw) > 1e-3 || Math.abs(tPitch - pitch) > 1e-3;
+      if (!reduceMotion || settling || dragging) schedule();
+    }
+    function schedule() {
+      if (!running) { running = true; requestAnimationFrame(frame); }
+    }
+
+    function setMode(next) {
+      if (!MODES[next] || next === mode) return;
+      mode = next; modeT0 = time; spatialManual = false; spatialIdx = 0;
+      var cfg = MODES[next];
+      if (typeof cfg.yaw === "number") { var d = cfg.yaw - tYaw; d = Math.atan2(Math.sin(d), Math.cos(d)); tYaw = tYaw + d; }
+      tPitch = cfg.pitch;
+      buttons.forEach(function (bt) { bt.setAttribute("aria-pressed", String(bt.getAttribute("data-mode") === next)); });
+      if (stageCap) { stageCap.innerHTML = CAPTIONS[next]; liveEl = stageCap.querySelector("[data-live]"); lastLive = ""; }
+      lastView = "";
+      schedule();
+    }
+
+    // pointer and keyboard
+    canvas.addEventListener("pointerdown", function (ev) {
+      dragging = true; moved = false;
+      lastX = downX = ev.clientX; lastY = downY = ev.clientY;
+      try { canvas.setPointerCapture(ev.pointerId); } catch (err) { /* ignore */ }
+      lastInteract = performance.now(); schedule();
+    });
+    canvas.addEventListener("pointermove", function (ev) {
+      if (!dragging) return;
+      var dx = ev.clientX - lastX, dy = ev.clientY - lastY;
+      lastX = ev.clientX; lastY = ev.clientY;
+      if (Math.abs(ev.clientX - downX) + Math.abs(ev.clientY - downY) > 4) moved = true;
+      yaw += dx * 0.009; tYaw = yaw;
+      pitch = clamp(pitch + dy * 0.004, 0.12, 0.95); tPitch = pitch;
+      lastInteract = performance.now(); schedule();
+    });
+    canvas.addEventListener("pointerup", function () {
+      if (!dragging) return;
+      dragging = false; lastInteract = performance.now();
+      if (!moved && mode === "spatial") { spatialIdx = 1 - spatialIdx; spatialManual = true; }
+      schedule();
+    });
+    canvas.addEventListener("pointercancel", function () { dragging = false; });
+    canvas.addEventListener("keydown", function (ev) {
+      var used = true;
+      if (ev.key === "ArrowLeft") tYaw -= 0.2;
+      else if (ev.key === "ArrowRight") tYaw += 0.2;
+      else if (ev.key === "ArrowUp") tPitch = clamp(tPitch - 0.08, 0.12, 0.95);
+      else if (ev.key === "ArrowDown") tPitch = clamp(tPitch + 0.08, 0.12, 0.95);
+      else if ((ev.key === "Enter" || ev.key === " ") && mode === "spatial") { spatialIdx = 1 - spatialIdx; spatialManual = true; }
+      else used = false;
+      if (used) { ev.preventDefault(); lastInteract = performance.now(); schedule(); }
+    });
+
+    // lens buttons; on wide screens they also scroll to the matching chapter
+    var lockUntil = 0;
+    buttons.forEach(function (bt) {
+      bt.addEventListener("click", function () {
+        var m = bt.getAttribute("data-mode");
+        setMode(m);
+        if (wideMQ.matches) {
+          lockUntil = performance.now() + 1200;
+          if (m === "world") window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+          else { var target = document.getElementById(m); if (target) target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }); }
+        }
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".to-world"), function (bt) {
+      bt.addEventListener("click", function () {
+        setMode(bt.getAttribute("data-mode"));
+        var stage = document.querySelector(".stage");
+        if (stage) stage.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      });
+    });
+
+    // scroll sync: on wide screens the chapter in the middle of the viewport picks the perspective
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (!wideMQ.matches || performance.now() < lockUntil) return;
+        entries.forEach(function (en) { if (en.isIntersecting) setMode(en.target.getAttribute("data-mode")); });
+      }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+      Array.prototype.forEach.call(document.querySelectorAll(".hero[data-mode], .chapters [data-mode]"), function (el) { io.observe(el); });
+      var vis = new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        if (visible) { lastTS = 0; schedule(); }
+      });
+      vis.observe(canvas);
+    }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) visible = false;
+      else { visible = true; lastTS = 0; schedule(); }
+    });
+    if ("ResizeObserver" in window) new ResizeObserver(function () { resize(); schedule(); }).observe(canvas);
+    else window.addEventListener("resize", function () { resize(); schedule(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { schedule(); });
+
+    readColors(); resize(); schedule();
+    var startMode = canvas.getAttribute("data-start-mode");
+    if (startMode && MODES[startMode]) { setMode(startMode); yaw = tYaw; pitch = tPitch; schedule(); }
+    return { refresh: function () { readColors(); schedule(); }, setMode: setMode };
+  })();
+})();
+
+(function () {
+  "use strict";
+
+  /* ---------- image viewer: shared by the photo gallery and the paper figures ---------- */
+  var viewer = (function () {
+    var dlg = document.getElementById("lightbox");
+    if (!dlg) return null;
+    var img = document.getElementById("lb-img"), cap = document.getElementById("lb-cap");
+    var prev = document.getElementById("lb-prev"), next = document.getElementById("lb-next");
+    var full = document.getElementById("lb-open");
+    var list = [], cur = 0;
+    function show(i) {
+      cur = (i + list.length) % list.length;
+      var it = list[cur];
+      img.src = it.src; img.alt = it.alt || ""; cap.textContent = it.caption || "";
+      if (full) full.href = it.src;
+    }
+    function open(items, i, isFigure) {
+      list = items;
+      prev.hidden = next.hidden = items.length < 2;
+      dlg.classList.toggle("is-figure", !!isFigure);
+      show(i);
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+    }
+    function close() { if (dlg.close) dlg.close(); else dlg.removeAttribute("open"); }
+    prev.addEventListener("click", function () { show(cur - 1); });
+    next.addEventListener("click", function () { show(cur + 1); });
+    document.getElementById("lb-close").addEventListener("click", close);
+    dlg.addEventListener("keydown", function (e) {
+      if (list.length < 2) return;
+      if (e.key === "ArrowLeft") show(cur - 1);
+      else if (e.key === "ArrowRight") show(cur + 1);
+    });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) close(); });
+    return { open: open };
+  })();
+
+  /* ---------- paper figures: click a figure to see it larger ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll(".figs, .materials"), function (fold) {
+    var buttons = Array.prototype.slice.call(fold.querySelectorAll(".fig-zoom"));
+    var items = buttons.map(function (b) {
+      var im = b.querySelector("img");
+      return { src: b.getAttribute("data-full"), alt: im ? im.alt : "", caption: b.getAttribute("data-caption") || "" };
+    });
+    buttons.forEach(function (b, i) {
+      b.addEventListener("click", function () { if (viewer) viewer.open(items, i, true); });
+    });
+  });
+
+  /* ---------- demo videos: play while on screen, pause when scrolled away ---------- */
+  (function () {
+    var vids = Array.prototype.slice.call(document.querySelectorAll("video[data-autoplay]"));
+    if (!vids.length) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var v = en.target;
+        if (en.isIntersecting && en.intersectionRatio >= 0.35) {
+          if (v.paused && !v.ended) { var p = v.play(); if (p && p.catch) p.catch(function () { /* autoplay refused: the controls remain */ }); }
+        } else if (!v.paused) { v.pause(); }
+      });
+    }, { threshold: [0, 0.35, 0.6] });
+    vids.forEach(function (v) { io.observe(v); });
+  })();
+
+  /* ---------- photo gallery (shown once window.PHOTOS lists at least one photo) ---------- */
+  (function () {
+    var list = window.PHOTOS || [];
+    var wrap = document.getElementById("photos");
+    var grid = document.getElementById("gallery");
+    if (!wrap || !grid || !list.length || !viewer) return;
+    wrap.hidden = false;
+    list.forEach(function (p, i) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "ph";
+      b.setAttribute("aria-label", "Open photo" + (p.caption ? ": " + p.caption : ""));
+      var im = document.createElement("img");
+      im.src = p.src; im.alt = p.alt || ""; im.loading = "lazy"; im.decoding = "async";
+      b.appendChild(im);
+      if (p.caption) { var c = document.createElement("span"); c.className = "ph-cap"; c.textContent = p.caption; b.appendChild(c); }
+      b.addEventListener("click", function () { viewer.open(list, i, false); });
+      grid.appendChild(b);
+    });
+  })();
+})();
+</script>
+</body>
+</html>

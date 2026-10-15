@@ -1,15 +1,17 @@
 # Personal website — Jiaxin Huang
 
-The whole site is one file, `index.html`. `cv.pdf` is the CV it links to, and the `figs` folder holds the
-paper figures (teasers and frameworks) that fold out under the key papers.
+The site is five pages: `index.html` (home) and one page per research perspective, `spatial.html`,
+`reconstruction.html`, `navigation.html` and `safety.html`. `cv.pdf` is the CV it links to. The folders:
+`figs` (paper figures), `posters` (NeurIPS 2025 posters, PDF plus preview), `videos` (demo videos with
+preview frames), `fonts` (the Charter web font; its notice is in `fonts/LICENSE-Charter.txt`) and `photos`.
 Nothing else is needed: no build step, no framework, no tracking.
 
 ## Publish on GitHub Pages (free)
 
 1. Sign in to GitHub and create a **public** repository named `Habseligkeiten87.github.io`
    (your GitHub username followed by `.github.io`).
-2. In the new repository choose **Add file → Upload files**, drag in `index.html`, `cv.pdf` and the whole
-   `figs` folder (and `photos` once it has pictures), and commit. Keep the folder names as they are.
+2. In the new repository choose **Add file → Upload files**, drag in the five `.html` files, `cv.pdf` and the whole
+   `figs`, `posters`, `videos` and `fonts` folders (and `photos` once it has pictures), and commit. Keep the folder names as they are.
 3. Open **Settings → Pages**. Under *Build and deployment*, set *Source* to **Deploy from a branch**,
    branch **main**, folder **/ (root)**, then **Save**.
 4. After a minute or two the site is live at `https://habseligkeiten87.github.io`.
@@ -27,6 +29,8 @@ Nothing else is needed: no build step, no framework, no tracking.
 
 - New CV: replace `cv.pdf` in the repository with the new file (keep the name).
 - New paper or news item: edit `index.html` on GitHub (pencil icon) or ask Claude to update it.
+- The four perspective pages are generated together with `index.html`; ask Claude to regenerate all five when the
+  research text, papers or materials change, so the pages stay consistent.
 - The publication list on the site is generated from the CV's `04_Publication.tex`,
   so the item numbers (S16, C9, ...) match the CV.
 
@@ -48,6 +52,19 @@ Nothing else is needed: no build step, no framework, no tracking.
 ## Paper figures
 
 - Each figure comes in two sizes: `*-1100.webp` is shown on the page, `*-full.webp` opens in the viewer.
-- They sit under SURPRISE3D (teaser), MLLM-For3D (framework) and GuidedNav (teaser and framework),
+- They sit under SURPRISE3D (teaser), MLLM-For3D (framework), GuidedNav (teaser and framework) and HUGE-Bench (teaser),
   both in the Research section and in the publication list, folded until a visitor opens them.
 - To show a figure for another paper, send the image to Claude; it is added the same way.
+
+## Fonts
+
+- Headings and quotations: Charter (in `fonts/`). Running text: Aptos where the visitor has it installed,
+  otherwise Lato. Small labels: Lato (from Google Fonts). Chinese: Noto Serif SC and Ma Shan Zheng.
+- Aptos is Microsoft's font and cannot be bundled with the site, so most visitors see Lato for running text.
+
+## Posters and videos
+
+- `posters/*-1100.webp` is the preview shown on the page; clicking it opens the PDF in `posters/`.
+- `videos/*.mp4` are small H.264 files (about 1 to 4 MB each) that play muted while on screen and pause when
+  scrolled away; `*-poster.webp` is the frame shown before playback. To add a demo, send Claude the video and the
+  paper it belongs to.

@@ -4,18 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Jiaxin Huang</title>
-<meta name="description" content="Jiaxin Huang (黄佳欣), Ph.D. candidate at MBZUAI and Project Leader of the Embodied AI team at AgiBot X-Lab, works on 3D/4D world models: spatial reasoning, 3D/4D reconstruction, embodied navigation, and safety of 3D/4D generative models.">
+<meta name="description" content="Jiaxin Huang (黄佳欣), third-year Ph.D. student at MBZUAI and Project Leader of the Embodied Navigation Team at AgiBot X-Lab, works on 3D/4D world models: spatial reasoning, 3D/4D reconstruction, embodied navigation, and safety of 3D/4D generative models.">
 <meta property="og:title" content="Jiaxin Huang">
-<meta property="og:description" content="Jiaxin Huang (黄佳欣), Ph.D. candidate at MBZUAI and Project Leader of the Embodied AI team at AgiBot X-Lab, works on 3D/4D world models: spatial reasoning, 3D/4D reconstruction, embodied navigation, and safety of 3D/4D generative models.">
+<meta property="og:description" content="Jiaxin Huang (黄佳欣), third-year Ph.D. student at MBZUAI and Project Leader of the Embodied Navigation Team at AgiBot X-Lab, works on 3D/4D world models: spatial reasoning, 3D/4D reconstruction, embodied navigation, and safety of 3D/4D generative models.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%279%27%20fill%3D%27%23b23a2c%27/%3E%3Ctext%20x%3D%2732%27%20y%3D%2746%27%20font-size%3D%2740%27%20text-anchor%3D%27middle%27%20fill%3D%27%23fbf3ee%27%20font-family%3D%27serif%27%3E%E9%BB%84%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;1,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Ma+Shan+Zheng&amp;family=Noto+Serif+SC:wght@400;600&amp;family=Spectral:ital,wght@0,300;0,400;0,500;1,400&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&amp;family=Ma+Shan+Zheng&amp;family=Noto+Serif+SC:wght@400;600&amp;display=swap">
 <style>
 /* Layout: a sticky point-cloud "world" (left) that the four perspectives redraw as they scroll past (right);
    full-width reference bands (publications, news, about) follow. Palette: misty paper, ink, and the four
-   mineral pigments of blue-green landscape painting, one per perspective; cinnabar only for the seal. */
+   mineral pigments of blue-green landscape painting, one per perspective; cinnabar only for the seal.
+   Type: Charter for headings and quotations, Aptos for running text (Lato where Aptos is not installed),
+   Lato for small labels; Chinese in Noto Serif SC and Ma Shan Zheng. */
+/* Bitstream Charter, free to use and redistribute; notice in fonts/LICENSE-Charter.txt */
+@font-face { font-family: "Charter"; src: url("fonts/charter_regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Charter"; src: url("fonts/charter_italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Charter"; src: url("fonts/charter_bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Charter"; src: url("fonts/charter_bold_italic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: swap; }
 :root {
   --paper: #f5f3ee;
   --paper-2: #ebe7de;
@@ -35,10 +42,9 @@
   --on-seal: #fbf3ee;
   --link: var(--c-spatial);
 
-  --font-display: "Spectral", "Noto Serif SC", Georgia, serif;
-  --font-body: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --font-greek: "Gentium Book Plus", "Spectral", Georgia, serif;
+  --font-display: "Charter", "Noto Serif SC", Georgia, serif;
+  --font-body: "Aptos", "Lato", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-ui: "Lato", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
   --font-zh: "Noto Serif SC", "Songti SC", "SimSun", serif;
   --font-brush: "Ma Shan Zheng", "Noto Serif SC", "STKaiti", "KaiTi", serif;
 
@@ -91,11 +97,11 @@ i { font-style: italic; }
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
 }
 .topbar-in { height: var(--header-h); display: flex; align-items: center; gap: 18px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 500 1.05rem/1 var(--font-display); white-space: nowrap; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 700 1.05rem/1 var(--font-display); white-space: nowrap; }
 .seal-sm { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 3px; background: var(--seal); color: var(--on-seal); font: 400 17px/1 var(--font-brush); }
 .topnav { margin-left: auto; display: flex; gap: 18px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .topnav::-webkit-scrollbar { display: none; }
-.topnav a { color: var(--ink-2); text-decoration: none; font-size: 0.9rem; white-space: nowrap; padding-block: 6px; }
+.topnav a { color: var(--ink-2); text-decoration: none; font: 400 0.9rem/1.62 var(--font-ui); white-space: nowrap; padding-block: 6px; }
 .topnav a:hover { color: var(--ink); }
 @media (max-width: 520px) { .topbar-in { gap: 12px; } .topnav { gap: 14px; } }
 .theme-btn { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--rule); background: transparent; color: var(--ink); font: 400 17px/1 var(--font-brush); cursor: pointer; }
@@ -111,12 +117,13 @@ i { font-style: italic; }
 }
 
 .eyebrow, .kicker, .verse-label, .wid, .showing, .news time, .about-grid h3, .when, .stage-hint, .pub-id, .badge, .tag {
-  font-family: var(--font-mono); font-weight: 500;
+  font-family: var(--font-ui); font-weight: 400;
 }
-.eyebrow { margin: 0 0 14px; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.wid, .pub-id, .kicker .num { font-weight: 700; }
+.eyebrow { margin: 0 0 14px; font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
 
 /* hero */
-.hero h1 { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font: 300 clamp(2.5rem, 6vw, 3.7rem)/1.04 var(--font-display); letter-spacing: -0.01em; }
+.hero h1 { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; font: 400 clamp(2.4rem, 5.6vw, 3.5rem)/1.06 var(--font-display); letter-spacing: -0.015em; }
 .name-zh { font: 400 0.48em/1 var(--font-zh); letter-spacing: 0.14em; color: var(--ink-2); }
 .seal { display: inline-flex; flex-direction: column; align-items: center; align-self: center; padding: 5px 5px 4px; border-radius: 3px; background: var(--seal); color: var(--on-seal); font: 400 1.1rem/1.05 var(--font-brush); letter-spacing: 0; }
 .role { margin: 18px 0 0; color: var(--ink-2); max-width: 40em; }
@@ -124,7 +131,7 @@ i { font-style: italic; }
 .links { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.95rem; }
 .links .email { display: inline-flex; align-items: baseline; gap: 8px; flex-wrap: wrap; min-width: 0; }
 .links .email a { overflow-wrap: anywhere; }
-.copy-btn { font: 500 0.72rem/1 var(--font-mono); padding: 4px 8px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink-2); cursor: pointer; }
+.copy-btn { font: 700 0.68rem/1 var(--font-ui); letter-spacing: 0.04em; padding: 4px 8px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink-2); cursor: pointer; }
 .copy-btn:hover { border-color: var(--ink-3); color: var(--ink); }
 .open { margin: 16px 0 0; display: flex; gap: 10px; align-items: center; font-size: 0.9rem; color: var(--ink-2); }
 .open .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--c-recon); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-recon) 20%, transparent); }
@@ -154,35 +161,35 @@ cite i { font-style: italic; }
 .stage-hint { position: absolute; right: 12px; bottom: 8px; margin: 0; font-size: 0.68rem; letter-spacing: 0.04em; color: var(--ink-3); pointer-events: none; }
 .stage-noscript { position: absolute; inset: auto 14px 40% 14px; margin: 0; text-align: center; color: var(--ink-2); }
 .lenses { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
-.lens-btn { --btn: var(--ink); display: grid; justify-items: center; gap: 3px; padding: 7px 2px 8px; border: 1px solid var(--rule); border-radius: 4px; background: transparent; color: var(--ink-2); cursor: pointer; font: 500 0.72rem/1.2 var(--font-body); }
+.lens-btn { --btn: var(--ink); display: grid; justify-items: center; gap: 3px; padding: 7px 2px 8px; border: 1px solid var(--rule); border-radius: 4px; background: transparent; color: var(--ink-2); cursor: pointer; font: 400 0.74rem/1.2 var(--font-ui); }
 .lens-btn .g { font: 400 1.34rem/1.1 var(--font-brush); color: var(--btn); }
 .lens-btn .l { max-width: 100%; white-space: nowrap; }
 @media (max-width: 440px) { .lens-btn .l { font-size: 0.6rem; letter-spacing: -0.01em; } }
 .lens-btn:hover { border-color: var(--ink-3); }
 .lens-btn[aria-pressed="true"] { color: var(--ink); background: var(--paper-2); border-color: var(--btn); box-shadow: inset 0 -2px 0 var(--btn); }
-.lens-btn[data-mode="spatial"] { --btn: var(--c-spatial); }
-.lens-btn[data-mode="recon"] { --btn: var(--c-recon); }
-.lens-btn[data-mode="nav"] { --btn: var(--c-nav); }
-.lens-btn[data-mode="safety"] { --btn: var(--c-safety); }
+.lens-btn[data-mode="spatial"], .lens-link[data-mode="spatial"] { --btn: var(--c-spatial); }
+.lens-btn[data-mode="recon"], .lens-link[data-mode="recon"] { --btn: var(--c-recon); }
+.lens-btn[data-mode="nav"], .lens-link[data-mode="nav"] { --btn: var(--c-nav); }
+.lens-btn[data-mode="safety"], .lens-link[data-mode="safety"] { --btn: var(--c-safety); }
 .stage-caption { margin: 0; min-height: 4.8em; font-size: 0.9rem; color: var(--ink-2); }
-.stage-caption .live { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-3); white-space: nowrap; }
+.stage-caption .live { font-family: var(--font-ui); font-size: 0.8rem; color: var(--ink-3); white-space: nowrap; }
 
 /* chapters */
-.kicker { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--lens, var(--ink-3)); }
+.kicker { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lens, var(--ink-3)); }
 .kicker .num { color: var(--lens, var(--ink-3)); }
 .kicker .zhk { font: 400 0.82rem/1 var(--font-zh); letter-spacing: 0.2em; text-transform: none; color: var(--ink-3); }
-.intro { padding-block: 44px 48px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 16px); }
+.intro { padding-block: 52px 56px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 16px); }
 .intro h2, .lens h2 { margin: 12px 0 0; max-width: 22em; font: 400 clamp(1.45rem, 2.5vw, 1.95rem)/1.24 var(--font-display); text-wrap: balance; }
-.intro > p:not(.kicker) { margin: 18px 0 0; max-width: 38em; }
+.intro > p:not(.kicker) { margin: 18px 0 0; max-width: 36em; }
 
-.lens { position: relative; padding-block: 52px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 16px); }
-.lens[data-mode="spatial"] { --lens: var(--c-spatial); }
-.lens[data-mode="recon"] { --lens: var(--c-recon); }
-.lens[data-mode="nav"] { --lens: var(--c-nav); }
-.lens[data-mode="safety"] { --lens: var(--c-safety); }
+.lens { position: relative; padding-block: 68px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 16px); }
+.lens[data-mode="spatial"], .page[data-mode="spatial"] { --lens: var(--c-spatial); }
+.lens[data-mode="recon"], .page[data-mode="recon"] { --lens: var(--c-recon); }
+.lens[data-mode="nav"], .page[data-mode="nav"] { --lens: var(--c-nav); }
+.lens[data-mode="safety"], .page[data-mode="safety"] { --lens: var(--c-safety); }
 .glyph { position: absolute; top: 26px; right: 0; z-index: 0; font: 400 clamp(6rem, 13vw, 9.5rem)/1 var(--font-brush); color: var(--glyph); pointer-events: none; user-select: none; }
 .lens > :not(.glyph) { position: relative; z-index: 1; }
-.statement { margin: 22px 0 0; max-width: 38em; }
+.statement { margin: 18px 0 0; max-width: 34em; font-size: 1.06rem; color: var(--ink-2); }
 
 .verses { margin: 24px 0 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 .verse { margin: 0; padding-block: 18px; display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) auto; gap: 18px; align-items: start; }
@@ -190,24 +197,23 @@ cite i { font-style: italic; }
 .verse.west { grid-template-columns: 4.6rem minmax(0, 1fr); }
 .verse.wide { margin-top: 26px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 .verse-label { padding-top: 5px; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
-.grc { margin: 0 0 6px; font: italic 400 1.14rem/1.5 var(--font-greek); color: var(--ink); }
 @media (max-width: 560px) {
   .verse, .verse.west { grid-template-columns: minmax(0, 1fr) auto; }
   .verse-label { grid-column: 1 / -1; padding-top: 0; }
   .verse.west > div { grid-column: 1 / -1; }
 }
 
-.works { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 14px; }
+.works { list-style: none; padding: 0; margin: 30px 0 0; display: grid; gap: 22px; }
 .works li { display: grid; grid-template-columns: 2.8rem minmax(0, 1fr); gap: 12px; align-items: baseline; }
 .wid { font-size: 0.76rem; color: var(--lens, var(--ink-3)); }
 .wtitle { font-weight: 500; color: var(--ink); }
 a.wtitle { color: var(--ink); text-decoration: none; }
 a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, var(--ink-3)); }
 .wmeta { display: block; margin-top: 2px; font-size: 0.86rem; color: var(--ink-2); }
-.lens-foot { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; }
+.lens-foot { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; }
 .more { font-size: 0.9rem; }
 .more::after { content: " \2192"; }
-.to-world { font: 500 0.82rem/1 var(--font-body); padding: 8px 12px; border: 1px solid var(--lens, var(--rule)); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; }
+.to-world { font: 400 0.82rem/1 var(--font-ui); padding: 8px 12px; border: 1px solid var(--lens, var(--rule)); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; }
 @media (min-width: 960px) { .to-world { display: none; } }
 
 /* ---------- bands ---------- */
@@ -218,9 +224,9 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 
 .filters { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { --chip: var(--ink-3); display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink-2); cursor: pointer; font: 500 0.82rem/1.1 var(--font-body); }
+.chip { --chip: var(--ink-3); display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink-2); cursor: pointer; font: 400 0.84rem/1.1 var(--font-ui); }
 .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--chip); }
-.chip .n { font: 500 0.74rem/1 var(--font-mono); color: var(--ink-3); }
+.chip .n { font: 700 0.72rem/1 var(--font-ui); color: var(--ink-3); }
 .chip:hover { border-color: var(--ink-3); }
 .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .chip[aria-pressed="true"] .n { color: var(--paper); opacity: 0.75; }
@@ -228,13 +234,13 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 .chip[data-filter="recon"], .pub[data-tag="recon"] { --chip: var(--c-recon); }
 .chip[data-filter="nav"], .pub[data-tag="nav"] { --chip: var(--c-nav); }
 .chip[data-filter="safety"], .pub[data-tag="safety"] { --chip: var(--c-safety); }
-.lead-toggle { display: inline-flex; gap: 8px; align-items: center; font-size: 0.88rem; color: var(--ink-2); cursor: pointer; }
+.lead-toggle { display: inline-flex; gap: 8px; align-items: center; font: 400 0.88rem/1.4 var(--font-ui); color: var(--ink-2); cursor: pointer; }
 .lead-toggle input { width: 16px; height: 16px; accent-color: var(--ink); }
 .showing { margin: 16px 0 0; font-size: 0.78rem; color: var(--ink-3); }
 
 .pub-years { margin-top: 8px; }
 .year { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 18px; padding-block: 20px; border-top: 1px solid var(--rule); }
-.year h3 { margin: 0; font: 300 1.7rem/1.1 var(--font-display); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.year h3 { margin: 0; font: 400 1.6rem/1.1 var(--font-display); color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
 .pub { --chip: var(--ink-3); display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 12px; }
 .pub-id { font-size: 0.76rem; line-height: 1.75; color: var(--ink-3); }
@@ -243,7 +249,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 .pub-title a { color: var(--ink); text-decoration: none; }
 .pub-title a:hover { text-decoration: underline; text-decoration-color: var(--chip); }
 .pub-authors { margin: 3px 0 0; font-size: 0.9rem; color: var(--ink-2); }
-.pub-authors strong { color: var(--ink); font-weight: 600; }
+.pub-authors strong { color: var(--ink); font-weight: 700; }
 .pub-venue { margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; font-size: 0.86rem; color: var(--ink-2); }
 .tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; letter-spacing: 0.03em; color: var(--ink-3); white-space: nowrap; }
 .tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--chip); }
@@ -262,13 +268,13 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 
 .about-grid { margin-top: 26px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
 @media (min-width: 900px) { .about-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr); gap: 44px; } }
-.about-grid h3 { margin: 0 0 14px; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.about-grid h3 { margin: 0 0 14px; font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
 .timeline, .plain { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
 .timeline li { display: grid; gap: 1px; }
 .when { font-size: 0.76rem; color: var(--ink-3); }
-.what { font-weight: 600; }
+.what { font-weight: 700; }
 .where, .plain li { font-size: 0.93rem; color: var(--ink-2); }
-.plain b { color: var(--ink); font-weight: 600; }
+.plain b { color: var(--ink); font-weight: 700; }
 
 /* footer */
 .foot { border-top: 1px solid var(--rule); padding-block: 44px 60px; }
@@ -286,7 +292,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 .glyph-sm { position: absolute; right: 10px; top: 4px; font: 400 4.8rem/1 var(--font-brush); color: var(--glyph); pointer-events: none; user-select: none; }
 .life-card h3 { margin: 0; font: 400 1.4rem/1.2 var(--font-display); }
 .life-tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-.life-tags li { padding: 5px 9px; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper); font: 500 0.76rem/1 var(--font-mono); color: var(--ink-2); }
+.life-tags li { padding: 5px 9px; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper); font: 400 0.78rem/1 var(--font-ui); color: var(--ink-2); }
 .life-card p { margin: 0; }
 .motto { display: block; margin-top: 10px; font: 400 1rem/1.4 var(--font-zh); letter-spacing: 0.14em; color: var(--ink); }
 .motto-en { display: block; font-size: 0.86rem; color: var(--ink-3); }
@@ -297,7 +303,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 
 /* ---------- photos ---------- */
 .photos { margin-top: 36px; }
-.photos-h { margin: 0 0 14px; font: 500 0.74rem/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.photos-h { margin: 0 0 14px; font: 400 0.74rem/1.4 var(--font-ui); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
 .gallery { columns: 3 220px; column-gap: 12px; }
 .ph { display: block; width: 100%; margin: 0 0 12px; padding: 0; border: 0; background: none; cursor: zoom-in; break-inside: avoid; text-align: left; color: inherit; font: inherit; }
 .ph img { display: block; width: 100%; height: auto; border-radius: 3px; }
@@ -308,14 +314,14 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 .lightbox p { margin: 10px 16px 0; font-size: 0.9rem; color: var(--ink-2); }
 .lb-controls { display: flex; gap: 8px; justify-content: flex-end; padding: 12px 16px 14px; }
 .lb-open { margin-right: auto; align-self: center; font-size: 0.86rem; }
-.lb-controls button { padding: 8px 12px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; font: 500 0.82rem/1 var(--font-body); }
+.lb-controls button { padding: 8px 12px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; font: 400 0.84rem/1 var(--font-ui); }
 
 /* ---------- paper figures: a teaser or framework folded under the paper until opened ---------- */
 .figs { margin-top: 10px; }
 .figs > summary {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 5px 12px 5px 10px; border: 1px solid var(--rule); border-radius: 999px;
-  font: 500 0.78rem/1.2 var(--font-body); color: var(--ink-2);
+  font: 400 0.8rem/1.2 var(--font-ui); color: var(--ink-2);
   cursor: pointer; list-style: none; -webkit-user-select: none; user-select: none;
 }
 .figs > summary::-webkit-details-marker { display: none; }
@@ -334,11 +340,97 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 .fig-zoom:hover { border-color: var(--ink-3); }
 .fig-zoom img { display: block; width: 100%; height: auto; }
 .fig figcaption { margin-top: 8px; font-size: 0.86rem; line-height: 1.5; color: var(--ink-2); }
-.fig-kind { margin-right: 8px; font: 500 0.68rem/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fig-accent, var(--ink-3)); }
+.fig-kind { margin-right: 8px; font: 700 0.66rem/1 var(--font-ui); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fig-accent, var(--ink-3)); }
 .lens .figs { --fig-accent: var(--lens); }
 .pub .figs { --fig-accent: var(--chip); }
 @media (prefers-reduced-motion: reduce) { .figs > summary::before { transition: none; } }
 .lightbox.is-figure img { padding: 12px; background: var(--plate); filter: var(--plate-filter); }
+
+/* ---------- quotations: one quiet line, or folded behind the first line of the Chinese verse ---------- */
+.quote-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 22px !important; }
+.quote-line .q { font: italic 400 1.04rem/1.5 var(--font-display); color: var(--ink); }
+.quote-line cite { margin: 0; }
+.verses-fold { margin-top: 30px; }
+.verses-fold > summary {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px;
+  padding: 12px 0 0; border-top: 1px solid var(--rule);
+  cursor: pointer; list-style: none; -webkit-user-select: none; user-select: none;
+}
+.verses-fold > summary::-webkit-details-marker { display: none; }
+.verses-fold > summary::before {
+  content: ""; flex: none; align-self: center; width: 0; height: 0;
+  border-left: 5px solid var(--lens, var(--ink-3)); border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  transition: transform 0.15s ease;
+}
+.verses-fold[open] > summary::before { transform: rotate(90deg); }
+.vf-zh { font: 400 1.18rem/1.4 var(--font-brush); letter-spacing: 0.08em; color: var(--ink-2); }
+.vf-who { font: 400 0.72rem/1.4 var(--font-ui); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.verses-fold > summary:hover .vf-zh { color: var(--ink); }
+.verses-fold .verses { margin-top: 10px; border-top: 0; }
+@media (prefers-reduced-motion: reduce) { .verses-fold > summary::before { transition: none; } }
+
+.news .ne { display: inline-block; margin-right: 0.45em; }
+
+/* ---------- home: each perspective opens its own page ---------- */
+.lens h2 a { color: inherit; text-decoration: none; }
+.lens h2 a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--lens, var(--ink-3)); }
+.explore { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1px solid var(--lens, var(--rule)); border-radius: 999px; font: 400 0.86rem/1 var(--font-ui); color: var(--ink); text-decoration: none; }
+.explore::after { content: "\2192"; color: var(--lens, var(--ink-3)); }
+.explore:hover { background: color-mix(in srgb, var(--lens, var(--ink-3)) 10%, transparent); }
+
+/* ---------- perspective pages ---------- */
+.page-hero { display: grid; gap: 30px; padding-block: 40px 28px; }
+@media (min-width: 960px) {
+  .page-hero { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 56px; align-items: start; }
+  .page-hero-text { grid-column: 1; }
+  .page-stage { grid-area: auto; grid-column: 2; grid-row: 1; position: static; top: auto; }
+}
+.crumbs { margin: 0 0 18px; font: 400 0.8rem/1.4 var(--font-ui); color: var(--ink-3); }
+.crumbs a { color: var(--ink-3); text-decoration: none; }
+.crumbs a:hover { color: var(--ink); text-decoration: underline; }
+.crumbs span { margin-inline: 8px; }
+.page-hero h1 { margin: 12px 0 0; max-width: 18em; font: 400 clamp(1.8rem, 3.6vw, 2.7rem)/1.18 var(--font-display); text-wrap: balance; }
+.page-hero .statement { max-width: 40em; }
+.page-hero .statement + .statement { margin-top: 12px; }
+.lens-links { margin-top: 26px; max-width: 520px; }
+.lens-link { --btn: var(--ink); display: grid; justify-items: center; gap: 3px; padding: 7px 2px 8px; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink-2); text-decoration: none; font: 400 0.74rem/1.2 var(--font-ui); }
+.lens-link .g { font: 400 1.34rem/1.1 var(--font-brush); color: var(--btn); }
+.lens-link .l { max-width: 100%; white-space: nowrap; }
+@media (max-width: 440px) { .lens-link .l { font-size: 0.6rem; letter-spacing: -0.01em; } }
+.lens-link:hover { border-color: var(--ink-3); color: var(--ink); }
+.lens-link[aria-current="page"] { color: var(--ink); background: var(--paper-2); border-color: var(--btn); box-shadow: inset 0 -2px 0 var(--btn); }
+.page-stage .stage-frame { aspect-ratio: 4 / 3; max-height: 420px; }
+@media (min-width: 960px) { .page-stage .stage-frame { aspect-ratio: auto; height: 380px; } }
+.page-stage .stage-caption { min-height: 0; }
+
+.papers { padding-block: 16px 40px; }
+.sec-h { margin: 0 0 6px; font: 400 0.74rem/1.4 var(--font-ui); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.paper { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 12px; padding-block: 30px; border-top: 1px solid var(--rule); }
+.paper-id { margin: 0; font: 700 0.76rem/1.75 var(--font-ui); color: var(--lens, var(--ink-3)); }
+.paper-body { min-width: 0; }
+.paper h3 { margin: 0; font: 500 1.18rem/1.42 var(--font-body); }
+.paper h3 a { color: var(--ink); text-decoration: none; }
+.paper h3 a:hover { text-decoration: underline; text-decoration-color: var(--lens, var(--ink-3)); }
+.paper-authors { margin: 4px 0 0; font-size: 0.92rem; color: var(--ink-2); }
+.paper-authors strong { color: var(--ink); font-weight: 700; }
+.paper-meta { margin: 4px 0 0; font-size: 0.86rem; color: var(--ink-2); }
+.paper-meta a { color: var(--link); }
+.paper-links { margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.paper-links a { font: 400 0.8rem/1 var(--font-ui); padding: 6px 11px; border: 1px solid var(--rule); border-radius: 999px; text-decoration: none; color: var(--ink-2); }
+.paper-links a:hover { border-color: var(--lens, var(--ink-3)); color: var(--ink); }
+.paper-summary { margin: 14px 0 0; max-width: 60em; color: var(--ink-2); }
+.materials { display: grid; gap: 26px; margin-top: 22px; max-width: 900px; }
+.demo { display: grid; gap: 22px; }
+.vid-fig { margin: 0; }
+.vid { display: block; width: 100%; height: auto; max-width: 100%; aspect-ratio: 16 / 9; background: #0b0b0b; border-radius: 4px; }
+.video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 560px) { .video-grid { grid-template-columns: minmax(0, 1fr); } }
+.poster-link { display: block; }
+.poster-link img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 4px; background: var(--plate); filter: var(--plate-filter); }
+.poster-link:hover img { border-color: var(--ink-3); }
+.page-verses { padding-block: 0 56px; }
+.page-verses .verses-fold { margin-top: 0; max-width: 60em; }
+@media (max-width: 640px) { .paper { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
 
 </style>
 <script>try{var t=localStorage.getItem("jh-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
@@ -365,8 +457,8 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
     <section class="hero" data-mode="world" aria-labelledby="name">
       <p class="eyebrow">3D/4D world models · spatial intelligence · embodied AI</p>
       <h1 id="name"><span class="name-en">Jiaxin Huang</span><span class="name-zh" lang="zh-Hans">黄佳欣</span><span class="seal" aria-hidden="true" lang="zh-Hans"><span>佳</span><span>欣</span></span></h1>
-      <p class="role">Ph.D. candidate in Machine Learning at <a href="https://mbzuai.ac.ae/" target="_blank" rel="noopener">MBZUAI</a>, advised by <a href="https://tongliang-liu.github.io/" target="_blank" rel="noopener">Tongliang Liu</a> and <a href="https://mbzuai.ac.ae/study/faculty/steve-liu/" target="_blank" rel="noopener">Steve Liu</a>. Project Leader of the Embodied AI team at AgiBot X-Lab.</p>
-      <p class="thesis">I build 3D/4D world models, and I study one world from four perspectives: how a model reasons about space, how it rebuilds a changing scene, how a body moves through it, and how what we build is kept safe.</p>
+      <p class="role">Third-year Ph.D. student in Machine Learning at <a href="https://mbzuai.ac.ae/" target="_blank" rel="noopener">MBZUAI</a>, advised by <a href="https://tongliang-liu.github.io/" target="_blank" rel="noopener">Tongliang Liu</a> and <a href="https://mbzuai.ac.ae/study/faculty/steve-liu/" target="_blank" rel="noopener">Steve Liu</a>, and honored to collaborate with <a href="https://mingming-gong.github.io/" target="_blank" rel="noopener">Prof. Mingming Gong</a>. Happy to lead the Embodied Navigation Team at AgiBot X-Lab as Project Leader, mentored by <a href="https://shaoli-huang.github.io/" target="_blank" rel="noopener">Dr. Shaoli Huang</a>, and to work with two humanoid robots, Lingxi X2 and A3 Ultra.</p>
+      <p class="thesis">My research focuses on 3D/4D world models, which I study from four complementary perspectives: spatial reasoning, 3D/4D reconstruction, embodied navigation, and the safety of 3D/4D generative models.</p>
       <ul class="links" aria-label="Profiles and contact">
         <li><a href="https://scholar.google.com/citations?user=jfx4enUAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a></li>
         <li><a href="https://github.com/Habseligkeiten87" target="_blank" rel="noopener">GitHub</a></li>
@@ -374,7 +466,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
         <li><a href="cv.pdf" target="_blank" rel="noopener">CV (PDF)</a></li>
         <li class="email"><a id="email-addr" href="mailto:jiaxin.huang@mbzuai.ac.ae">jiaxin.huang@mbzuai.ac.ae</a><button class="copy-btn" type="button" data-copy="jiaxin.huang@mbzuai.ac.ae" aria-controls="email-addr">Copy</button></li>
       </ul>
-      <p class="open"><span class="dot" aria-hidden="true"></span>Open to research internships and full-time research roles in 2027.</p>
+      <p class="open"><span class="dot" aria-hidden="true"></span>Always open to research discussions and collaborations. Feel free to reach out.</p>
 
       <figure class="epigraph">
         <figcaption>
@@ -406,60 +498,44 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 
       <section class="intro" data-mode="world" aria-labelledby="h-intro">
         <p class="kicker">One world, four perspectives</p>
-        <h2 id="h-intro">A world model has to understand space, rebuild what changes, act in it, and keep it safe.</h2>
-        <p>My work treats a 3D/4D world model as one object seen from four sides. <a href="#spatial">Spatial reasoning</a> asks what a model understands about a scene. <a href="#recon">Reconstruction</a> asks how it rebuilds geometry and motion from video. <a href="#nav">Embodied navigation</a> asks whether a robot can act on that understanding. <a href="#safety">Safety</a> asks how the people and assets in that world are protected. Before my Ph.D., I worked on cross-domain medical image reconstruction (AAAI, IEEE TMM, ICIP).</p>
-        <figure class="verse west wide" aria-label="Aristotle, Metaphysics">
-          <span class="verse-label">West · 西</span>
-          <div>
-            <blockquote class="grc" lang="grc">Πάντες ἄνθρωποι τοῦ εἰδέναι ὀρέγονται φύσει.</blockquote>
-            <p class="tr">All men by nature desire to know. An indication of this is the delight we take in our senses, and above all others the sense of sight.</p>
-            <cite>Aristotle, <i>Metaphysics</i> I.1, 980a (tr. W. D. Ross)</cite>
-          </div>
-        </figure>
+        <h2 id="h-intro">A 3D/4D world model must reason about space, reconstruct dynamic scenes, support embodied action, and be protected against misuse.</h2>
+        <p class="statement">The four sections below address these requirements in turn: <a href="#spatial">spatial reasoning</a>, <a href="#recon">3D/4D reconstruction</a>, <a href="#nav">embodied navigation</a> and <a href="#safety">safety</a>. Each opens a page with the papers, figures, posters and demos.</p>
+        <p class="quote-line"><span class="q">“All men by nature desire to know.”</span><cite>Aristotle, <i>Metaphysics</i> I.1 (tr. W. D. Ross)</cite></p>
       </section>
 
       <article class="lens" id="spatial" data-mode="spatial" aria-labelledby="h-spatial">
         <span class="glyph" aria-hidden="true" lang="zh-Hans">观</span>
         <p class="kicker"><span class="num">01</span>Spatial reasoning<span class="zhk" lang="zh-Hans">空间推理</span></p>
-        <h2 id="h-spatial">How does a model know where things are, and from whose point of view?</h2>
-        <div class="verses">
-          <figure class="verse east">
-            <span class="verse-label">East · 东</span>
-            <figcaption>
-              <p class="tr">“You are not a fish. How do you know what fish enjoy?” “You are not me. How do you know I don't know what fish enjoy?”</p>
-              <cite>Zhuangzi 庄子, “Autumn Floods” 《秋水》</cite>
-            </figcaption>
-            <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">子非鱼，安知鱼之乐，子非我，安知我不知鱼之乐。</span><span class="cols" aria-hidden="true"><span class="col"><span>子</span><span>非</span><span>鱼</span></span><span class="col"><span>安</span><span>知</span><span>鱼</span><span>之</span><span>乐</span></span><span class="col"><span>子</span><span>非</span><span>我</span></span><span class="col"><span>安</span><span>知</span><span>我</span><span>不</span><span>知</span><span>鱼</span><span>之</span><span>乐</span></span></span></blockquote>
-          </figure>
-          <figure class="verse west">
-            <span class="verse-label">West · 西</span>
-            <div>
-              <blockquote class="grc" lang="grc">οὐδέποτε νοεῖ ἄνευ φαντάσματος ἡ ψυχή.</blockquote>
-              <p class="tr">The soul never thinks without a mental image.</p>
-              <cite>Aristotle, <i>De Anima</i> III.7, 431a</cite>
-            </div>
-          </figure>
-        </div>
-        <p class="statement">Multimodal language models can describe a room, yet 3D questions such as “what is behind the sofa” or “which lamp is on my left” still trip them up. I build benchmarks and methods for 3D spatial reasoning. <b class="m">SURPRISE3D</b> is a large-scale dataset for spatial understanding and reasoning in complex scenes. <b class="m">MLLM-For3D</b> is the first label-free framework that carries 2D multimodal-LLM reasoning into 3D segmentation. <b class="m">EgoAudit</b> shows that 3D vision-language models follow a viewpoint they are given but rarely infer one.</p>
+        <h2 id="h-spatial"><a href="spatial.html">How can a model ground language in 3D space, and from whose viewpoint?</a></h2>
+        <p class="statement">Most 3D vision-language benchmarks name the target object, so a model can succeed by matching names instead of reasoning about space. I build benchmarks that remove this shortcut and methods that bring the reasoning of 2D multimodal LLMs into 3D without any 3D annotation.</p>
         <ul class="works">
-          <li><span class="wid">C7</span><div><a class="wtitle" href="https://arxiv.org/abs/2507.07781" target="_blank" rel="noopener"><b class="m">SURPRISE3D</b>: A Dataset for Spatial Understanding and Reasoning in Complex 3D Scenes</a><span class="wmeta">NeurIPS 2025, Datasets &amp; Benchmarks Track · first author, project leader</span>
-            <details class="figs">
-              <summary>Teaser<span class="sr-only"> of SURPRISE3D</span></summary>
-              <div class="figs-body">
-                <figure class="fig"><button class="fig-zoom" type="button" data-full="figs/surprise3d-teaser-full.webp" data-caption="SURPRISE3D · Teaser. SURPRISE3D asks for objects without naming them. Spatial queries cover relative position, absolute distance, and narrative or parameter perspectives; knowledge queries cover common sense and human intention." aria-label="Enlarge the SURPRISE3D teaser"><img src="figs/surprise3d-teaser-1100.webp" srcset="figs/surprise3d-teaser-1100.webp 1100w, figs/surprise3d-teaser-full.webp 2200w" sizes="(min-width: 960px) 600px, 88vw" width="1100" height="492" loading="lazy" decoding="async" alt="Example SURPRISE3D queries over a 3D room, grouped into spatial reasoning (relative position, absolute distance, narrative perspective, parameter perspective) and knowledge reasoning (common sense, human intention)."></button><figcaption><span class="fig-kind">Teaser</span>SURPRISE3D asks for objects without naming them. Spatial queries cover relative position, absolute distance, and narrative or parameter perspectives; knowledge queries cover common sense and human intention.</figcaption></figure>
-              </div>
-            </details></div></li>
-          <li><span class="wid">C6</span><div><a class="wtitle" href="https://arxiv.org/abs/2503.18135" target="_blank" rel="noopener"><b class="m">MLLM-For3D</b>: Adapting Multimodal Large Language Model for 3D Reasoning Segmentation</a><span class="wmeta">NeurIPS 2025 · first author</span>
-            <details class="figs">
-              <summary>Framework<span class="sr-only"> of MLLM-For3D</span></summary>
-              <div class="figs-body">
-                <figure class="fig"><button class="fig-zoom" type="button" data-full="figs/mllm-for3d-framework-full.webp" data-caption="MLLM-For3D · Framework. A frozen 2D multimodal LLM segments several posed views from one implicit query. Token attention keeps the reliable views, and their masks become pseudo-labels that train a 3D encoder without any 3D labels." aria-label="Enlarge the MLLM-For3D framework"><img src="figs/mllm-for3d-framework-1100.webp" srcset="figs/mllm-for3d-framework-1100.webp 1100w, figs/mllm-for3d-framework-full.webp 2200w" sizes="(min-width: 960px) 600px, 88vw" width="1100" height="438" loading="lazy" decoding="async" alt="MLLM-For3D framework: a frozen multimodal LLM segments randomly selected posed views from an implicit query; token attention keeps reliable views as pseudo-labels that pre-train a 3D encoder with spatial and mask losses."></button><figcaption><span class="fig-kind">Framework</span>A frozen 2D multimodal LLM segments several posed views from one implicit query. Token attention keeps the reliable views, and their masks become pseudo-labels that train a 3D encoder without any 3D labels.</figcaption></figure>
-              </div>
-            </details></div></li>
+          <li><span class="wid">C7</span><div><a class="wtitle" href="https://arxiv.org/abs/2507.07781" target="_blank" rel="noopener"><b class="m">SURPRISE3D</b>: A Dataset for Spatial Understanding and Reasoning in Complex 3D Scenes</a><span class="wmeta">NeurIPS 2025, Datasets &amp; Benchmarks Track · first author, project leader</span></div></li>
+          <li><span class="wid">C6</span><div><a class="wtitle" href="https://arxiv.org/abs/2503.18135" target="_blank" rel="noopener"><b class="m">MLLM-For3D</b>: Adapting Multimodal Large Language Model for 3D Reasoning Segmentation</a><span class="wmeta">NeurIPS 2025 · first author</span></div></li>
           <li><span class="wid">S14</span><div><span class="wtitle"><b class="m">EgoAudit</b>: Auditing Egocentric Spatial Reasoning in 3D Vision-Language Models</span><span class="wmeta">Under review · first author</span></div></li>
           <li><span class="wid">WIP</span><div><span class="wtitle">3D &amp; 4D Spatial Reasoning: A Comprehensive Review</span><span class="wmeta">In preparation · first author, project leader</span></div></li>
         </ul>
+        <details class="verses-fold">
+          <summary><span class="vf-zh" lang="zh-Hans">子非鱼，安知鱼之乐</span><span class="vf-who">Zhuangzi · Aristotle</span></summary>
+          <div class="verses">
+            <figure class="verse east">
+              <span class="verse-label">East · 东</span>
+              <figcaption>
+                <p class="tr">“You are not a fish. How do you know what fish enjoy?” “You are not me. How do you know I don't know what fish enjoy?”</p>
+                <cite>Zhuangzi 庄子, “Autumn Floods” 《秋水》</cite>
+              </figcaption>
+              <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">子非鱼，安知鱼之乐，子非我，安知我不知鱼之乐。</span><span class="cols" aria-hidden="true"><span class="col"><span>子</span><span>非</span><span>鱼</span></span><span class="col"><span>安</span><span>知</span><span>鱼</span><span>之</span><span>乐</span></span><span class="col"><span>子</span><span>非</span><span>我</span></span><span class="col"><span>安</span><span>知</span><span>我</span><span>不</span><span>知</span><span>鱼</span><span>之</span><span>乐</span></span></span></blockquote>
+            </figure>
+            <figure class="verse west">
+              <span class="verse-label">West · 西</span>
+              <div>
+                <p class="tr">The soul never thinks without a mental image.</p>
+                <cite>Aristotle, <i>De Anima</i> III.7, 431a</cite>
+              </div>
+            </figure>
+          </div>
+        </details>
         <div class="lens-foot">
+          <a class="explore" href="spatial.html">Open this perspective</a>
           <a class="more" href="#publications" data-set-filter="spatial">All papers in this perspective</a>
           <button class="to-world" type="button" data-mode="spatial">Show on the mountain</button>
         </div>
@@ -468,32 +544,35 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
       <article class="lens" id="recon" data-mode="recon" aria-labelledby="h-recon">
         <span class="glyph" aria-hidden="true" lang="zh-Hans">构</span>
         <p class="kicker"><span class="num">02</span>3D/4D reconstruction<span class="zhk" lang="zh-Hans">三维/四维重建</span></p>
-        <h2 id="h-recon">What in a scene changes over time, what stays, and can we rebuild both?</h2>
-        <div class="verses">
-          <figure class="verse east">
-            <span class="verse-label">East · 东</span>
-            <figcaption>
-              <p class="tr">Seen through what changes, heaven and earth do not last the blink of an eye; seen through what does not change, things and I are both without end.</p>
-              <cite>Su Shi 苏轼, “Former Ode on the Red Cliff” 《赤壁赋》, 1082</cite>
-            </figcaption>
-            <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">盖将自其变者而观之，则天地曾不能以一瞬，自其不变者而观之，则物与我皆无尽也。</span><span class="cols" aria-hidden="true"><span class="col"><span>盖</span><span>将</span><span>自</span><span>其</span><span>变</span><span>者</span><span>而</span><span>观</span><span>之</span></span><span class="col"><span>则</span><span>天</span><span>地</span><span>曾</span><span>不</span><span>能</span><span>以</span><span>一</span><span>瞬</span></span><span class="col"><span>自</span><span>其</span><span>不</span><span>变</span><span>者</span><span>而</span><span>观</span><span>之</span></span><span class="col"><span>则</span><span>物</span><span>与</span><span>我</span><span>皆</span><span>无</span><span>尽</span><span>也</span></span></span></blockquote>
-          </figure>
-          <figure class="verse west">
-            <span class="verse-label">West · 西</span>
-            <div>
-              <blockquote class="grc" lang="grc">τοῦτο γάρ ἐστιν ὁ χρόνος, ἀριθμὸς κινήσεως κατὰ τὸ πρότερον καὶ ὕστερον.</blockquote>
-              <p class="tr">For this is what time is: the number of motion with respect to before and after.</p>
-              <cite>Aristotle, <i>Physics</i> IV.11, 219b</cite>
-            </div>
-          </figure>
-        </div>
-        <p class="statement">A world model has to rebuild geometry and motion from ordinary video. I work on Gaussian-splatting representations that keep the static scene apart from what moves. <b class="m">UrbanGS</b> uses semantic guidance to reconstruct large urban scenes with both static and dynamic objects, and <b class="m">Mirage2Matter</b> builds a physically grounded Gaussian world model from video. With collaborators, I also survey video world models.</p>
+        <h2 id="h-recon"><a href="reconstruction.html">What in a scene changes over time, what stays, and how to reconstruct?</a></h2>
+        <p class="statement">A dynamic scene mixes structure that stays fixed with content that moves. I develop Gaussian splatting methods that keep the two apart, from semantic-guided reconstruction of urban scenes to physically grounded world models that turn multi-view video into simulation-ready environments.</p>
         <ul class="works">
           <li><span class="wid">S1</span><div><a class="wtitle" href="https://arxiv.org/abs/2412.03473" target="_blank" rel="noopener"><b class="m">UrbanGS</b>: Semantic-Guided Gaussian Splatting for Urban Scene Reconstruction</a><span class="wmeta">arXiv 2024 · co-first author</span></div></li>
           <li><span class="wid">S2</span><div><a class="wtitle" href="https://arxiv.org/abs/2602.00096" target="_blank" rel="noopener"><b class="m">Mirage2Matter</b>: A Physically Grounded Gaussian World Model from Video</a><span class="wmeta">arXiv 2026</span></div></li>
           <li><span class="wid">S9</span><div><span class="wtitle">Predicting the World via Video Representation: A Comprehensive Survey on Video World Models</span><span class="wmeta">Preprints 2026</span></div></li>
         </ul>
+        <details class="verses-fold">
+          <summary><span class="vf-zh" lang="zh-Hans">自其变者而观之</span><span class="vf-who">Su Shi · Aristotle</span></summary>
+          <div class="verses">
+            <figure class="verse east">
+              <span class="verse-label">East · 东</span>
+              <figcaption>
+                <p class="tr">Seen through what changes, heaven and earth do not last the blink of an eye; seen through what does not change, things and I are both without end.</p>
+                <cite>Su Shi 苏轼, “Former Ode on the Red Cliff” 《赤壁赋》, 1082</cite>
+              </figcaption>
+              <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">盖将自其变者而观之，则天地曾不能以一瞬，自其不变者而观之，则物与我皆无尽也。</span><span class="cols" aria-hidden="true"><span class="col"><span>盖</span><span>将</span><span>自</span><span>其</span><span>变</span><span>者</span><span>而</span><span>观</span><span>之</span></span><span class="col"><span>则</span><span>天</span><span>地</span><span>曾</span><span>不</span><span>能</span><span>以</span><span>一</span><span>瞬</span></span><span class="col"><span>自</span><span>其</span><span>不</span><span>变</span><span>者</span><span>而</span><span>观</span><span>之</span></span><span class="col"><span>则</span><span>物</span><span>与</span><span>我</span><span>皆</span><span>无</span><span>尽</span><span>也</span></span></span></blockquote>
+            </figure>
+            <figure class="verse west">
+              <span class="verse-label">West · 西</span>
+              <div>
+                <p class="tr">For this is what time is: the number of motion with respect to before and after.</p>
+                <cite>Aristotle, <i>Physics</i> IV.11, 219b</cite>
+              </div>
+            </figure>
+          </div>
+        </details>
         <div class="lens-foot">
+          <a class="explore" href="reconstruction.html">Open this perspective</a>
           <a class="more" href="#publications" data-set-filter="recon">All papers in this perspective</a>
           <button class="to-world" type="button" data-mode="recon">Show on the mountain</button>
         </div>
@@ -502,40 +581,36 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
       <article class="lens" id="nav" data-mode="nav" aria-labelledby="h-nav">
         <span class="glyph" aria-hidden="true" lang="zh-Hans">行</span>
         <p class="kicker"><span class="num">03</span>Embodied navigation<span class="zhk" lang="zh-Hans">具身导航</span></p>
-        <h2 id="h-nav">Can a robot follow a long instruction through a building it has never seen, on real hardware?</h2>
-        <div class="verses">
-          <figure class="verse east">
-            <span class="verse-label">East · 东</span>
-            <figcaption>
-              <p class="tr">Hills upon hills, streams upon streams: I doubt there is a way through. Then shady willows, bright flowers, and another village.</p>
-              <cite>Lu You 陆游, “Visiting a Village West of the Mountain” 《游山西村》, 1167</cite>
-            </figcaption>
-            <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">山重水复疑无路，柳暗花明又一村。</span><span class="cols" aria-hidden="true"><span class="col"><span>山</span><span>重</span><span>水</span><span>复</span><span>疑</span><span>无</span><span>路</span></span><span class="col"><span>柳</span><span>暗</span><span>花</span><span>明</span><span>又</span><span>一</span><span>村</span></span></span></blockquote>
-          </figure>
-          <figure class="verse west">
-            <span class="verse-label">West · 西</span>
-            <div>
-              <blockquote class="grc" lang="grc">ἃ γὰρ δεῖ μαθόντας ποιεῖν, ταῦτα ποιοῦντες μανθάνομεν.</blockquote>
-              <p class="tr">For the things we have to learn before we can do them, we learn by doing them.</p>
-              <cite>Aristotle, <i>Nicomachean Ethics</i> II.1, 1103a (tr. W. D. Ross)</cite>
-            </div>
-          </figure>
-        </div>
-        <p class="statement">At AgiBot X-Lab I lead vision-and-language navigation for the mass-produced Lingxi X2 humanoid, from a simulation-to-real data engine to policies that run on the robot. <b class="m">GuidedNav</b> shapes what a navigation policy attends to before it acts, with subtask, landmark and spatial guidance used only during training. <b class="m">NavTTT</b> gives the policy a parametric memory that keeps learning during each episode. <b class="m">HUGE-Bench</b> extends vision-language-action evaluation to drones.</p>
+        <h2 id="h-nav"><a href="navigation.html">How can an embodied agent follow long-horizon instructions in unseen environments and on real robots?</a></h2>
+        <p class="statement">Vision-and-language navigation requires an agent to track its progress through an instruction, ground the landmarks that matter for the current subgoal, and understand the geometry around them before it acts. At AgiBot X-Lab I lead this research for the Lingxi X2 and A3 Ultra humanoids, from representation guidance and test-time memory to deployment on the robot.</p>
         <ul class="works">
-          <li><span class="wid">S16</span><div><a class="wtitle" href="https://arxiv.org/abs/2610.13122" target="_blank" rel="noopener"><b class="m">GuidedNav</b>: Shaping Vision-Language Navigation Representations through Pre-Action Attention and Spatial Guidance</a><span class="wmeta">arXiv 2026, under review · project leader · <a href="https://jingyu198.github.io/GuidedNav/" target="_blank" rel="noopener">project page</a></span>
-            <details class="figs">
-              <summary>Teaser &amp; framework<span class="sr-only"> of GuidedNav</span></summary>
-              <div class="figs-body">
-                <figure class="fig"><button class="fig-zoom" type="button" data-full="figs/guidednav-teaser-full.webp" data-caption="GuidedNav · Teaser. Three kinds of guidance along one route: which subtask comes next, which landmark to attend to, and how to move in 3D." aria-label="Enlarge the GuidedNav teaser"><img src="figs/guidednav-teaser-1100.webp" srcset="figs/guidednav-teaser-1100.webp 1100w, figs/guidednav-teaser-full.webp 1864w" sizes="(min-width: 960px) 600px, 88vw" width="1100" height="555" loading="lazy" decoding="async" alt="GuidedNav overview: subtask guidance (what to do), landmark guidance (what to attend to) and spatial guidance (how to move in 3D) along a robot&#x27;s route through a house, with success-rate and speed comparisons."></button><figcaption><span class="fig-kind">Teaser</span>Three kinds of guidance along one route: which subtask comes next, which landmark to attend to, and how to move in 3D.</figcaption></figure>
-                <figure class="fig"><button class="fig-zoom" type="button" data-full="figs/guidednav-framework-full.webp" data-caption="GuidedNav · Framework. Guidance acts at the pre-action position and only during training: subtask attention over the instruction, landmark attention over the current frame, and long-horizon and local spatial guidance. At inference the policy runs without these modules." aria-label="Enlarge the GuidedNav framework"><img src="figs/guidednav-framework-1100.webp" srcset="figs/guidednav-framework-1100.webp 1100w, figs/guidednav-framework-full.webp 1498w" sizes="(min-width: 960px) 600px, 88vw" width="1100" height="620" loading="lazy" decoding="async" alt="GuidedNav architecture: a large language model reads instruction, history and current visual tokens; training-only modules guide attention at the pre-action position toward the instruction subtask, the landmark in the current frame, and spatial features."></button><figcaption><span class="fig-kind">Framework</span>Guidance acts at the pre-action position and only during training: subtask attention over the instruction, landmark attention over the current frame, and long-horizon and local spatial guidance. At inference the policy runs without these modules.</figcaption></figure>
-              </div>
-            </details></div></li>
+          <li><span class="wid">S16</span><div><a class="wtitle" href="https://arxiv.org/abs/2610.13122" target="_blank" rel="noopener"><b class="m">GuidedNav</b>: Shaping Vision-Language Navigation Representations through Pre-Action Attention and Spatial Guidance</a><span class="wmeta">arXiv 2026, under review · project leader · <a href="https://jingyu198.github.io/GuidedNav/" target="_blank" rel="noopener">project page</a></span></div></li>
           <li><span class="wid">S15</span><div><span class="wtitle"><b class="m">NavTTT</b>: Adaptive Parametric Memory via Hierarchical Test-Time Training for Vision-and-Language Navigation</span><span class="wmeta">Under review · project leader</span></div></li>
-          <li><span class="wid">C9</span><div><a class="wtitle" href="https://arxiv.org/abs/2603.19822" target="_blank" rel="noopener"><b class="m">HUGE-Bench</b>: A Benchmark for High-Level UAV Vision-Language-Action Tasks</a><span class="wmeta">ECCV 2026</span></div></li>
-          <li><span class="wid">S5</span><div><a class="wtitle" href="https://arxiv.org/abs/2603.17524" target="_blank" rel="noopener"><b class="m">KineVLA</b>: Towards Kinematics-Aware Vision-Language-Action Models with Bi-Level Action Decomposition</a><span class="wmeta">arXiv 2026</span></div></li>
+          <li><span class="wid">C9</span><div><a class="wtitle" href="https://arxiv.org/abs/2603.19822" target="_blank" rel="noopener"><b class="m">HUGE-Bench</b>: A Benchmark for High-Level UAV Vision-Language-Action Tasks</a><span class="wmeta">ECCV 2026 · <a href="https://jingyu198.github.io/HUGE_Bench/" target="_blank" rel="noopener">project page</a></span></div></li>
+          <li><span class="wid">S5</span><div><a class="wtitle" href="https://arxiv.org/abs/2603.17524" target="_blank" rel="noopener"><b class="m">ExecVLA</b>: Following Fine-Grained Execution Constraints in Vision-Language-Action Models with Bi-Level Action Representation</a><span class="wmeta">arXiv 2026</span></div></li>
         </ul>
+        <details class="verses-fold">
+          <summary><span class="vf-zh" lang="zh-Hans">山重水复疑无路</span><span class="vf-who">Lu You · Aristotle</span></summary>
+          <div class="verses">
+            <figure class="verse east">
+              <span class="verse-label">East · 东</span>
+              <figcaption>
+                <p class="tr">Hills upon hills, streams upon streams: I doubt there is a way through. Then shady willows, bright flowers, and another village.</p>
+                <cite>Lu You 陆游, “Visiting a Village West of the Mountain” 《游山西村》, 1167</cite>
+              </figcaption>
+              <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">山重水复疑无路，柳暗花明又一村。</span><span class="cols" aria-hidden="true"><span class="col"><span>山</span><span>重</span><span>水</span><span>复</span><span>疑</span><span>无</span><span>路</span></span><span class="col"><span>柳</span><span>暗</span><span>花</span><span>明</span><span>又</span><span>一</span><span>村</span></span></span></blockquote>
+            </figure>
+            <figure class="verse west">
+              <span class="verse-label">West · 西</span>
+              <div>
+                <p class="tr">For the things we have to learn before we can do them, we learn by doing them.</p>
+                <cite>Aristotle, <i>Nicomachean Ethics</i> II.1, 1103a (tr. W. D. Ross)</cite>
+              </div>
+            </figure>
+          </div>
+        </details>
         <div class="lens-foot">
+          <a class="explore" href="navigation.html">Open this perspective</a>
           <a class="more" href="#publications" data-set-filter="nav">All papers in this perspective</a>
           <button class="to-world" type="button" data-mode="nav">Show on the mountain</button>
         </div>
@@ -544,26 +619,8 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
       <article class="lens" id="safety" data-mode="safety" aria-labelledby="h-safety">
         <span class="glyph" aria-hidden="true" lang="zh-Hans">守</span>
         <p class="kicker"><span class="num">04</span>Safety of 3D/4D generative models<span class="zhk" lang="zh-Hans">生成安全</span></p>
-        <h2 id="h-safety">When a phone video can become a 3D asset in minutes, who protects the people and places in it?</h2>
-        <div class="verses">
-          <figure class="verse east">
-            <span class="verse-label">East · 东</span>
-            <figcaption>
-              <p class="tr">Act on things before they take shape; bring order before disorder begins.</p>
-              <cite>Laozi 老子, <i>Dao De Jing</i> 《道德经》, chapter 64</cite>
-            </figcaption>
-            <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">为之于未有，治之于未乱。</span><span class="cols" aria-hidden="true"><span class="col"><span>为</span><span>之</span><span>于</span><span>未</span><span>有</span></span><span class="col"><span>治</span><span>之</span><span>于</span><span>未</span><span>乱</span></span></span></blockquote>
-          </figure>
-          <figure class="verse west">
-            <span class="verse-label">West · 西</span>
-            <div>
-              <blockquote class="grc" lang="grc">ὥσπερ γὰρ καὶ τελεωθὲν βέλτιστον τῶν ζῴων ἄνθρωπός ἐστιν, οὕτω καὶ χωρισθὲν νόμου καὶ δίκης χείριστον πάντων.</blockquote>
-              <p class="tr">For man, when perfected, is the best of animals, but, when separated from law and justice, he is the worst of all.</p>
-              <cite>Aristotle, <i>Politics</i> I.2, 1253a (tr. Benjamin Jowett)</cite>
-            </div>
-          </figure>
-        </div>
-        <p class="statement">Feed-forward geometry models can turn an ordinary video into a renderable 4D asset within minutes, so the people, products and places in that video need protection. <b class="m">Safe4D</b> protects live video that is released frame by frame and cannot be revised. <b class="m">4DGuard</b> embeds protection into a 4D Gaussian asset so that every rendered frame carries it. I co-organized LifeGenIP, the ECCV 2026 workshop on life-cycle IP governance of visual generative models.</p>
+        <h2 id="h-safety"><a href="safety.html">As videos become reconstructable 4D assets, how can the content they capture be protected?</a></h2>
+        <p class="statement">3D Gaussian splatting and feed-forward 4D reconstruction make captured content easy to reconstruct, fine-tune and redistribute. I study proactive protection across the asset life cycle: source videos, 4D Gaussian assets, and the 3D generative models built from them.</p>
         <ul class="works">
           <li><span class="wid">S13</span><div><span class="wtitle"><b class="m">Safe4D</b>: Causal Video Protection against Unauthorized 4D Reconstruction</span><span class="wmeta">Under review · first author</span></div></li>
           <li><span class="wid">S12</span><div><span class="wtitle"><b class="m">4DGuard</b>: Towards Proactive 4D Gaussian Assets Protection for Dynamic Novel-View Synthesis</span><span class="wmeta">Under review · first author</span></div></li>
@@ -571,7 +628,28 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
           <li><span class="wid">S4</span><div><a class="wtitle" href="https://arxiv.org/abs/2602.03878" target="_blank" rel="noopener">Intellectual Property Protection for 3D Gaussian Splatting Assets: A Survey</a><span class="wmeta">arXiv 2026</span></div></li>
           <li><span class="wid">WS</span><div><a class="wtitle" href="https://lifegenip.cc/" target="_blank" rel="noopener">LifeGenIP: Life-Cycle Intellectual Property Governance of Visual Generative Models</a><span class="wmeta">ECCV 2026 workshop, Malmö · co-organizer</span></div></li>
         </ul>
+        <details class="verses-fold">
+          <summary><span class="vf-zh" lang="zh-Hans">为之于未有</span><span class="vf-who">Laozi · Aristotle</span></summary>
+          <div class="verses">
+            <figure class="verse east">
+              <span class="verse-label">East · 东</span>
+              <figcaption>
+                <p class="tr">Act on things before they take shape; bring order before disorder begins.</p>
+                <cite>Laozi 老子, <i>Dao De Jing</i> 《道德经》, chapter 64</cite>
+              </figcaption>
+              <blockquote class="zh-v" lang="zh-Hans"><span class="sr-only">为之于未有，治之于未乱。</span><span class="cols" aria-hidden="true"><span class="col"><span>为</span><span>之</span><span>于</span><span>未</span><span>有</span></span><span class="col"><span>治</span><span>之</span><span>于</span><span>未</span><span>乱</span></span></span></blockquote>
+            </figure>
+            <figure class="verse west">
+              <span class="verse-label">West · 西</span>
+              <div>
+                <p class="tr">For man, when perfected, is the best of animals, but, when separated from law and justice, he is the worst of all.</p>
+                <cite>Aristotle, <i>Politics</i> I.2, 1253a (tr. Benjamin Jowett)</cite>
+              </div>
+            </figure>
+          </div>
+        </details>
         <div class="lens-foot">
+          <a class="explore" href="safety.html">Open this perspective</a>
           <a class="more" href="#publications" data-set-filter="safety">All papers in this perspective</a>
           <button class="to-world" type="button" data-mode="safety">Show on the mountain</button>
         </div>
@@ -584,7 +662,6 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
     <div class="wrap">
       <div class="band-head">
         <h2 id="h-pubs">Publications</h2>
-        <p>18 peer-reviewed papers, 10 of them as first or co-first author, plus 16 preprints and papers under review. <a href="https://scholar.google.com/citations?user=jfx4enUAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a>: 220+ citations, h-index 9 (October 2026). Item numbers match my CV.</p>
       </div>
       <div class="filters">
         <div class="chips" role="group" aria-label="Filter by perspective">
@@ -608,7 +685,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2604.09037" target="_blank" rel="noopener"><b class="m">Siming-Bench</b>: Evaluating Procedural Correctness from Continuous Interactions in Clinical Skill Videos</a></p>
                 <p class="pub-authors">Xiyang Huang, Jiawei Lin, Keying Wu, <strong>Jiaxin Huang</strong>, Kailai Yang, Renxiong Wei, Jiayi Xiang, Ziyan Kuang, Min Peng, Qianqian Xie, Sophia Ananiadou</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>In the 2026 Conference on Empirical Methods in Natural Language Processing (EMNLP), 2026.</span> <span class="badge oral">Oral</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>EMNLP 2026</span> <span class="badge oral">Oral</span></p>
               </div>
             </li>
             <li class="pub" data-tag="mm" data-lead="0">
@@ -616,7 +693,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><b class="m">TRACE</b>: An Experiential Framework for Coherent Multi-hop Knowledge Graph Question Answering</p>
                 <p class="pub-authors">Yingxu Wang, <strong>Jiaxin Huang</strong>, Mengzhu Wang, Nan Yin</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>In the 64th Annual Meeting of the Association for Computational Linguistics (ACL), pp. 1830&ndash;1851, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>ACL 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="nav" data-lead="0">
@@ -624,7 +701,13 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2603.19822" target="_blank" rel="noopener"><b class="m">HUGE-Bench</b>: A Benchmark for High-Level UAV Vision-Language-Action Tasks</a></p>
                 <p class="pub-authors">Jingyu Guo, Ziye Chen, Ziwen Li, Zhengqing Gao, <strong>Jiaxin Huang</strong>, Hanlue Zhang, Fengming Huang, Yu Yao, Tongliang Liu, Mingming Gong</p>
-                <p class="pub-venue"><span class="tag">Embodied navigation</span> <span>In the 19th European Conference on Computer Vision (ECCV), pp. 373&ndash;388, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Embodied navigation</span> <span>ECCV 2026</span> <a class="pub-link" href="https://jingyu198.github.io/HUGE_Bench/" target="_blank" rel="noopener">Project page</a></p>
+                <details class="figs">
+                  <summary>Teaser<span class="sr-only"> of HUGE-Bench</span></summary>
+                  <div class="figs-body">
+                    <figure class="fig"><button class="fig-zoom" type="button" data-full="figs/hugebench-teaser-full.webp" data-caption="HUGE-Bench · Teaser. High-level drone tasks such as building inspection, mapping and traversal, set in four real-world digital-twin scenes with a collision-aware simulator." aria-label="Enlarge the HUGE-Bench teaser"><img src="figs/hugebench-teaser-1100.webp" srcset="figs/hugebench-teaser-1100.webp 1100w, figs/hugebench-teaser-full.webp 1802w" sizes="(min-width: 960px) 860px, 92vw" width="1100" height="722" loading="lazy" decoding="async" alt="HUGE-Bench overview: four drone tasks (building inspection, mapping mission, roadway inspection, traversal mission) drawn as flight paths over real-world digital-twin scenes, around a panel listing 4 scenes, 8 high-level vision-language-action tasks, 2.56 million metres of trajectories and a collision-aware simulator."></button><figcaption><span class="fig-kind">Teaser</span>High-level drone tasks such as building inspection, mapping and traversal, set in four real-world digital-twin scenes with a collision-aware simulator.</figcaption></figure>
+                  </div>
+                </details>
               </div>
             </li>
             <li class="pub" data-tag="mm" data-lead="0">
@@ -632,7 +715,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Wan_Mobile-VTON_High-Fidelity_On-Device_Virtual_Try-On_CVPR_2026_paper.html" target="_blank" rel="noopener"><b class="m">Mobile-VTON</b>: High-Fidelity On-Device Virtual Try-On</a></p>
                 <p class="pub-authors">Zhenchen Wan, Ce Chen, Runqi Lin, <strong>Jiaxin Huang</strong>, Tianxi Chen, Yanwu Xu, Tongliang Liu, Mingming Gong</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>In the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 38081&ndash;38090, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>CVPR 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="med" data-lead="0">
@@ -640,7 +723,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Joint Lossless Compression and Steganography for Medical Images via Large Language Models</p>
                 <p class="pub-authors">Pengcheng Zheng, Xiaorong Pu, Kecheng Chen, <strong>Jiaxin Huang</strong>, Meng Yang, Bai Feng, Yazhou Ren, Jianan Jiang, Chaoning Zhang, Yang Yang, Heng Tao Shen</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>IEEE Transactions on Multimedia, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>IEEE TMM 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="nav" data-lead="1">
@@ -648,7 +731,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2610.13122" target="_blank" rel="noopener"><b class="m">GuidedNav</b>: Shaping Vision-Language Navigation Representations through Pre-Action Attention and Spatial Guidance</a></p>
                 <p class="pub-authors">Jingyu Guo, <strong>Jiaxin Huang</strong><sup>&dagger;</sup>, Chengxing Lin, Xiaoyu Luo, Cheng Wen, Shanshan Ye, Tingjin Chu, Shaoli Huang, Mingming Gong</p>
-                <p class="pub-venue"><span class="tag">Embodied navigation</span> <span>arXiv preprint arXiv:2610.13122, 2026.</span> <span class="badge">Under review</span> <a class="pub-link" href="https://jingyu198.github.io/GuidedNav/" target="_blank" rel="noopener">Project page</a></p>
+                <p class="pub-venue"><span class="tag">Embodied navigation</span> <span>arXiv 2026</span> <span class="badge">Under review</span> <a class="pub-link" href="https://jingyu198.github.io/GuidedNav/" target="_blank" rel="noopener">Project page</a></p>
                 <details class="figs">
                   <summary>Teaser &amp; framework<span class="sr-only"> of GuidedNav</span></summary>
                   <div class="figs-body">
@@ -703,7 +786,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2607.13431" target="_blank" rel="noopener">Discrete Diffusion Models: A Unified Framework from Tokenization to Generation</a></p>
                 <p class="pub-authors">Ye Yuan, Weien Li, Rui Song, Zeyu Li, Haochen Liu, Xiangyu Kong, Zixuan Dong, Linfeng Du, Zipeng Sun, Weixu Zhang, <strong>Jiaxin Huang</strong>, Changjiang Han, Yonghan Yang, Zichen Zhao, Xiuyuan Hu, Haolun Wu, Yankai Chen, Fengran Mo, Jikun Kang, Bowei He, Dawn Song, Philip S. Yu, Xue Liu</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>arXiv preprint arXiv:2607.13431, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>arXiv 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="recon" data-lead="0">
@@ -711,7 +794,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Predicting the World via Video Representation: A Comprehensive Survey on Video World Models</p>
                 <p class="pub-authors">Jiaxin Yan, Chaoning Zhang, Xudong Wang, Pengcheng Zheng, Ya Wen, Qigan Sun, <strong>Jiaxin Huang</strong>, Shuxu Chen, Yang Yang, Hyundong Shin</p>
-                <p class="pub-venue"><span class="tag">3D/4D reconstruction</span> <span>Preprints, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">3D/4D reconstruction</span> <span>Preprints 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="safety" data-lead="0">
@@ -719,7 +802,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2604.09688" target="_blank" rel="noopener">Immunizing 3D Gaussian Generative Models Against Unauthorized Fine-Tuning via Attribute-Space Traps</a></p>
                 <p class="pub-authors">Jianwei Zhang, Sihan Cao, Chaoning Zhang, Ziming Hong, <strong>Jiaxin Huang</strong>, Pengcheng Zheng, Caiyan Qin, Wei Dong, Yang Yang, Tongliang Liu</p>
-                <p class="pub-venue"><span class="tag">Safety</span> <span>arXiv preprint arXiv:2604.09688, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Safety</span> <span>arXiv 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="mm" data-lead="0">
@@ -727,7 +810,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2604.04972" target="_blank" rel="noopener"><b class="m">RCP</b>: Representation Consistency Pruner for Mitigating Distribution Shift in Large Vision-Language Models</a></p>
                 <p class="pub-authors">Jianwei Zhang, Chaoning Zhang, Sihan Cao, Wang Liu, Pengcheng Zheng, <strong>Jiaxin Huang</strong>, Caiyan Qin, Yalan Ye, Wei Dong, Yang Yang</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>arXiv preprint arXiv:2604.04972, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>arXiv 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="mm" data-lead="0">
@@ -735,15 +818,15 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2604.03154" target="_blank" rel="noopener"><b class="m">DSBD</b>: Dual-Aligned Structural Basis Distillation for Graph Domain Adaptation</a></p>
                 <p class="pub-authors">Yingxu Wang, Kunyu Zhang, <strong>Jiaxin Huang</strong>, Mengzhu Wang, Mingyan Xiao, Siyang Gao, Nan Yin</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>arXiv preprint arXiv:2604.03154, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>arXiv 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="nav" data-lead="0">
               <span class="pub-id">S5</span>
               <div class="pub-body">
-                <p class="pub-title"><a href="https://arxiv.org/abs/2603.17524" target="_blank" rel="noopener"><b class="m">KineVLA</b>: Towards Kinematics-Aware Vision-Language-Action Models with Bi-Level Action Decomposition</a></p>
+                <p class="pub-title"><a href="https://arxiv.org/abs/2603.17524" target="_blank" rel="noopener"><b class="m">ExecVLA</b>: Following Fine-Grained Execution Constraints in Vision-Language-Action Models with Bi-Level Action Representation</a></p>
                 <p class="pub-authors">Gaoge Han, Zhengqing Gao, Ziwen Li, <strong>Jiaxin Huang</strong>, Shaoli Huang, Fakhri Karray, Mingming Gong, Tongliang Liu</p>
-                <p class="pub-venue"><span class="tag">Embodied navigation</span> <span>arXiv preprint arXiv:2603.17524, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Embodied navigation</span> <span>arXiv 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="safety" data-lead="0">
@@ -751,7 +834,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2602.03878" target="_blank" rel="noopener">Intellectual Property Protection for 3D Gaussian Splatting Assets: A Survey</a></p>
                 <p class="pub-authors">Longjie Zhao, Ziming Hong, <strong>Jiaxin Huang</strong>, Runnan Chen, Mingming Gong, Tongliang Liu</p>
-                <p class="pub-venue"><span class="tag">Safety</span> <span>arXiv preprint arXiv:2602.03878, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Safety</span> <span>arXiv 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="mm" data-lead="0">
@@ -759,7 +842,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Towards Visual Chain-of-Thought Reasoning: A Comprehensive Survey</p>
                 <p class="pub-authors">Pengcheng Zheng, Chaoning Zhang, Mingzheng Cui, Guo Chen, Qigan Sun, <strong>Jiaxin Huang</strong>, Jiaquan Zhang, Tae-Ho Kim, Caiyan Qin, Yazhou Ren, Guoqing Wang, Yang Yang</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>TechRxiv, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>TechRxiv 2026</span></p>
               </div>
             </li>
             <li class="pub" data-tag="recon" data-lead="0">
@@ -767,7 +850,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2602.00096" target="_blank" rel="noopener"><b class="m">Mirage2Matter</b>: A Physically Grounded Gaussian World Model from Video</a></p>
                 <p class="pub-authors">Zhengqing Gao, Ziwen Li, Xin Wang, <strong>Jiaxin Huang</strong>, Zhenyang Ren, Mingkai Shao, Hanlue Zhang, Tianyu Huang, Yongkang Cheng, Yandong Guo, Runqi Lin, Yuanyuan Wang, Tongliang Liu, Kun Zhang, Mingming Gong</p>
-                <p class="pub-venue"><span class="tag">3D/4D reconstruction</span> <span>arXiv preprint arXiv:2602.00096, 2026.</span></p>
+                <p class="pub-venue"><span class="tag">3D/4D reconstruction</span> <span>arXiv 2026</span></p>
               </div>
             </li>
           </ol>
@@ -780,7 +863,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2507.07781" target="_blank" rel="noopener"><b class="m">SURPRISE3D</b>: A Dataset for Spatial Understanding and Reasoning in Complex 3D Scenes</a></p>
                 <p class="pub-authors"><strong>Jiaxin Huang</strong><sup>*</sup>, Ziwen Li<sup>*</sup>, Hanlue Zhang<sup>*</sup>, Runnan Chen, Zhengqing Gao, Xiao He, Yandong Guo, Wenping Wang, Tongliang Liu, Mingming Gong</p>
-                <p class="pub-venue"><span class="tag">Spatial reasoning</span> <span>Advances in Neural Information Processing Systems 38 (NeurIPS), Datasets and Benchmarks Track, 2025.</span> <a class="pub-link" href="https://proceedings.neurips.cc/paper_files/paper/2025/hash/a78b27a56bf8505f96710e9ffa9d5edf-Abstract-Datasets_and_Benchmarks_Track.html" target="_blank" rel="noopener">NeurIPS</a></p>
+                <p class="pub-venue"><span class="tag">Spatial reasoning</span> <span>NeurIPS 2025, Datasets &amp; Benchmarks Track</span> <a class="pub-link" href="https://proceedings.neurips.cc/paper_files/paper/2025/hash/a78b27a56bf8505f96710e9ffa9d5edf-Abstract-Datasets_and_Benchmarks_Track.html" target="_blank" rel="noopener">Proceedings</a></p>
                 <details class="figs">
                   <summary>Teaser<span class="sr-only"> of SURPRISE3D</span></summary>
                   <div class="figs-body">
@@ -794,7 +877,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2503.18135" target="_blank" rel="noopener"><b class="m">MLLM-For3D</b>: Adapting Multimodal Large Language Model for 3D Reasoning Segmentation</a></p>
                 <p class="pub-authors"><strong>Jiaxin Huang</strong>, Runnan Chen, Ziwen Li, Zhengqing Gao, Xiao He, Yandong Guo, Mingming Gong, Tongliang Liu</p>
-                <p class="pub-venue"><span class="tag">Spatial reasoning</span> <span>In Advances in Neural Information Processing Systems 38 (NeurIPS), 2025.</span> <a class="pub-link" href="https://proceedings.neurips.cc/paper_files/paper/2025/hash/4f0a2a0b2ca6ffd5c8d5de26d3e8d54d-Abstract-Conference.html" target="_blank" rel="noopener">NeurIPS</a></p>
+                <p class="pub-venue"><span class="tag">Spatial reasoning</span> <span>NeurIPS 2025</span> <a class="pub-link" href="https://proceedings.neurips.cc/paper_files/paper/2025/hash/4f0a2a0b2ca6ffd5c8d5de26d3e8d54d-Abstract-Conference.html" target="_blank" rel="noopener">Proceedings</a></p>
                 <details class="figs">
                   <summary>Framework<span class="sr-only"> of MLLM-For3D</span></summary>
                   <div class="figs-body">
@@ -808,7 +891,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Large Language Models for Lossless Image Compression: Next-Pixel Prediction in Language Space is All You Need</p>
                 <p class="pub-authors">Kecheng Chen, Pingping Zhang, Hui Liu, Jie Liu, Yibing Liu, <strong>Jiaxin Huang</strong>, Shiqi Wang, Hong Yan, Haoliang Li</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>In Advances in Neural Information Processing Systems 38 (NeurIPS), 2025.</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>NeurIPS 2025</span></p>
               </div>
             </li>
             <li class="pub" data-tag="med" data-lead="0">
@@ -816,7 +899,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Lightweight Medical Image Restoration via Integrating Reliable Lesion-Semantic Driven Prior</p>
                 <p class="pub-authors">Pengcheng Zheng, Kecheng Chen, <strong>Jiaxin Huang</strong>, Bohao Chen, Ju Liu, Yazhou Ren, Xiaorong Pu</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>In the 33rd ACM International Conference on Multimedia (ACM MM), pp. 2977&ndash;2986, 2025.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>ACM MM 2025</span></p>
               </div>
             </li>
             <li class="pub" data-tag="mm" data-lead="0">
@@ -824,7 +907,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><b class="m">ProtoMol</b>: Enhancing Molecular Property Prediction via Prototype-Guided Multimodal Learning</p>
                 <p class="pub-authors">Yingxu Wang, Kunyu Zhang, <strong>Jiaxin Huang</strong>, Nan Yin, Siwei Liu, Eran Segal</p>
-                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>Briefings in Bioinformatics, 26(6), bbaf629, 2025.</span></p>
+                <p class="pub-venue"><span class="tag">Multimodal &amp; language</span> <span>Brief. Bioinform. 2025</span></p>
               </div>
             </li>
             <li class="pub" data-tag="med" data-lead="1">
@@ -832,7 +915,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Data-Driven Soft Fault Diagnosis for Analog Circuits Based on Contrastive Learning</p>
                 <p class="pub-authors">Naixin Zhou<sup>*</sup>, <strong>Jiaxin Huang</strong><sup>*</sup>, Yijiu Zhao, Shibo Chen, Jiaming Zhao, Feiyu Long</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>IEEE Transactions on Instrumentation and Measurement, 2025.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>IEEE TIM 2025</span></p>
               </div>
             </li>
           </ol>
@@ -845,7 +928,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Sparse Bayesian Deep Learning for Cross Domain Medical Image Reconstruction</p>
                 <p class="pub-authors"><strong>Jiaxin Huang</strong>, Qi Wu, Yazhou Ren, Fan Yang, Aodi Yang, Qianqian Yang, Xiaorong Pu</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>In the 38th AAAI Conference on Artificial Intelligence (AAAI), 38(3), pp. 2339&ndash;2347, 2024.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>AAAI 2024</span></p>
               </div>
             </li>
             <li class="pub" data-tag="med" data-lead="1">
@@ -853,7 +936,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Cross-Domain Low-Dose CT Image Denoising with Semantic Preservation and Noise Alignment</p>
                 <p class="pub-authors"><strong>Jiaxin Huang</strong>, Kecheng Chen, Yazhou Ren, Jiayu Sun, Xiaorong Pu, Ce Zhu</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>IEEE Transactions on Multimedia, 26, pp. 8771&ndash;8782, 2024.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>IEEE TMM 2024</span></p>
               </div>
             </li>
             <li class="pub" data-tag="recon" data-lead="1">
@@ -861,7 +944,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><a href="https://arxiv.org/abs/2412.03473" target="_blank" rel="noopener"><b class="m">UrbanGS</b>: Semantic-Guided Gaussian Splatting for Urban Scene Reconstruction</a></p>
                 <p class="pub-authors">Ziwen Li<sup>*</sup>, <strong>Jiaxin Huang</strong><sup>*</sup>, Runnan Chen, Yunlong Che, Yandong Guo, Tongliang Liu, Fakhri Karray, Mingming Gong</p>
-                <p class="pub-venue"><span class="tag">3D/4D reconstruction</span> <span>arXiv preprint arXiv:2412.03473, 2024.</span></p>
+                <p class="pub-venue"><span class="tag">3D/4D reconstruction</span> <span>arXiv 2024</span></p>
               </div>
             </li>
           </ol>
@@ -874,7 +957,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Blockchain-Based Interpretable Electric Vehicle Battery Life Prediction in IoV</p>
                 <p class="pub-authors">Siyan Liu<sup>*</sup>, Chang Wu<sup>*</sup>, <strong>Jiaxin Huang</strong><sup>*</sup>, Ying Zhang, Ming Ye, Yuhang Huang</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>IEEE Internet of Things Journal, 11(4), pp. 7214&ndash;7227, 2023.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>IEEE IoT-J 2023</span></p>
               </div>
             </li>
             <li class="pub" data-tag="med" data-lead="1">
@@ -882,7 +965,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title"><b class="m">CDDnet</b>: Cross-Domain Denoising Network for Low-Dose CT Image via Local and Global Information Alignment</p>
                 <p class="pub-authors"><strong>Jiaxin Huang</strong>, Kecheng Chen, Yazhou Ren, Jiayu Sun, Yanmei Wang, Tao Tao, Xiaorong Pu</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>Computers in Biology and Medicine, 163, 107219, 2023.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>Comput. Biol. Med. 2023</span></p>
               </div>
             </li>
           </ol>
@@ -895,7 +978,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Cross Domain Low-Dose CT Image Denoising with Semantic Information Alignment</p>
                 <p class="pub-authors"><strong>Jiaxin Huang</strong>, Kecheng Chen, Jiayu Sun, Xiaorong Pu, Yazhou Ren</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>In the IEEE International Conference on Image Processing (ICIP), pp. 4228&ndash;4232, 2022.</span> <span class="badge oral">Oral</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>ICIP 2022</span> <span class="badge oral">Oral</span></p>
               </div>
             </li>
             <li class="pub" data-tag="med" data-lead="1">
@@ -903,7 +986,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">A Survey on Clinical Oriented CT Image Denoising</p>
                 <p class="pub-authors">Xiaorong Pu<sup>*</sup>, <strong>Jiaxin Huang</strong><sup>*</sup>, Junchi Liu, Jiayu Sun, Jixiang Luo, Yue Zhao, Kecheng Chen, Yazhou Ren</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>Frontiers of Data and Computing, 3(6), pp. 35&ndash;49, 2022.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>Front. Data Comput. 2022</span></p>
               </div>
             </li>
           </ol>
@@ -916,7 +999,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
               <div class="pub-body">
                 <p class="pub-title">Task-Driven Deep Learning for LDCT Image Denoising</p>
                 <p class="pub-authors">Kecheng Chen<sup>*</sup>, <strong>Jiaxin Huang</strong><sup>*</sup>, Jiayu Sun, Yazhou Ren, Xiaorong Pu</p>
-                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>In the 4th International Symposium on Image Computing and Digital Medicine (ISICDM), pp. 35&ndash;39, 2020.</span></p>
+                <p class="pub-venue"><span class="tag">Medical &amp; industrial AI</span> <span>ISICDM 2020</span></p>
               </div>
             </li>
           </ol>
@@ -928,18 +1011,21 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 
   <section class="band" id="news" aria-labelledby="h-news">
     <div class="wrap">
-      <div class="band-head"><h2 id="h-news">News</h2></div>
+      <div class="band-head">
+        <h2 id="h-news">News</h2>
+        <p>Always up for a chat about world models, embodied AI and spatial intelligence (or HYROX and specialty coffee). <a href="mailto:jiaxin.huang@mbzuai.ac.ae">Drop me an email</a>!</p>
+      </div>
       <ol class="news">
-        <li><time datetime="2026-10">Oct 2026</time><p><a href="https://arxiv.org/abs/2610.13122" target="_blank" rel="noopener"><b class="m">GuidedNav</b></a> is on arXiv, with a <a href="https://jingyu198.github.io/GuidedNav/" target="_blank" rel="noopener">project page</a>. I led the project at AgiBot X-Lab.</p></li>
-        <li><time datetime="2026-09">Sep 2026</time><p>Co-organized <a href="https://lifegenip.cc/" target="_blank" rel="noopener">LifeGenIP</a>, the ECCV 2026 workshop on life-cycle IP governance of visual generative models, in Malmö.</p></li>
-        <li><time datetime="2026-09">Sep 2026</time><p>Submitted six papers for review: four as first author, two as project leader.</p></li>
-        <li><time datetime="2026">2026</time><p><b class="m">Siming-Bench</b>, first-authored by my mentee Xiyang Huang, accepted to EMNLP 2026 as an oral paper.</p></li>
-        <li><time datetime="2026">2026</time><p><b class="m">HUGE-Bench</b> at ECCV 2026, <b class="m">TRACE</b> at ACL 2026, and <b class="m">Mobile-VTON</b> at CVPR 2026.</p></li>
-        <li><time datetime="2026-04">Apr 2026</time><p>Joined AgiBot X-Lab in Shenzhen as Project Leader of the Embodied AI team.</p></li>
-        <li><time datetime="2026">Spring 2026</time><p>Teaching assistant for ML813, Dimensionality Reduction and Manifold Learning, a Ph.D. course at MBZUAI.</p></li>
-        <li><time datetime="2025">2025</time><p><b class="m">SURPRISE3D</b> and <b class="m">MLLM-For3D</b> at NeurIPS 2025.</p></li>
-        <li><time datetime="2025">2025</time><p>Teaching assistant for Linear Algebra and Calculus, taught to the first cohort of AI undergraduates at MBZUAI.</p></li>
-        <li><time datetime="2024-09">Sep 2024</time><p>Started my Ph.D. in Machine Learning at MBZUAI.</p></li>
+        <li><time datetime="2026-10">Oct 2026</time><p><span class="ne" aria-hidden="true">🚀</span><a href="https://arxiv.org/abs/2610.13122" target="_blank" rel="noopener"><b class="m">GuidedNav</b></a> is live on arXiv, with a <a href="https://jingyu198.github.io/GuidedNav/" target="_blank" rel="noopener">project page</a> full of simulation and real-robot rollouts! Huge thanks to our navigation team at AgiBot X-Lab. Leading this project has been a blast.</p></li>
+        <li><time datetime="2026-09">Sep 2026</time><p><span class="ne" aria-hidden="true">🌍</span>Co-organized <a href="https://lifegenip.cc/" target="_blank" rel="noopener">LifeGenIP</a> at ECCV 2026 in Malmö, a workshop on protecting intellectual property across the whole life cycle of visual generative models. Thank you to every speaker and participant!</p></li>
+        <li><time datetime="2026-09">Sep 2026</time><p><span class="ne" aria-hidden="true">✍️</span>Six papers submitted, four as first author and two as project leader. Fingers crossed!</p></li>
+        <li><time datetime="2026">2026</time><p><span class="ne" aria-hidden="true">🎉</span><b class="m">Siming-Bench</b>, led by my mentee Xiyang Huang, is an <b>oral</b> paper at EMNLP 2026. So proud of him!</p></li>
+        <li><time datetime="2026">2026</time><p><span class="ne" aria-hidden="true">✨</span>A great year with collaborators: <b class="m">HUGE-Bench</b> at ECCV, <b class="m">TRACE</b> at ACL and <b class="m">Mobile-VTON</b> at CVPR.</p></li>
+        <li><time datetime="2026-04">Apr 2026</time><p><span class="ne" aria-hidden="true">🤖</span>Joined AgiBot X-Lab in Shenzhen to lead the Embodied Navigation Team, teaching humanoid robots to find their way.</p></li>
+        <li><time datetime="2026">Spring 2026</time><p><span class="ne" aria-hidden="true">📚</span>Teaching assistant for ML813, Dimensionality Reduction and Manifold Learning, a Ph.D. course at MBZUAI.</p></li>
+        <li><time datetime="2025">2025</time><p><span class="ne" aria-hidden="true">🎉</span>Two papers at NeurIPS 2025: <b class="m">SURPRISE3D</b> and <b class="m">MLLM-For3D</b>, both on 3D spatial reasoning.</p></li>
+        <li><time datetime="2025">2025</time><p><span class="ne" aria-hidden="true">🧮</span>Teaching assistant for Linear Algebra and Calculus for MBZUAI's very first cohort of AI undergraduates.</p></li>
+        <li><time datetime="2024-09">Sep 2024</time><p><span class="ne" aria-hidden="true">🎓</span>Started my Ph.D. in Machine Learning at MBZUAI in Abu Dhabi.</p></li>
       </ol>
     </div>
   </section>
@@ -951,10 +1037,10 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
         <div>
           <h3>Education and industry</h3>
           <ol class="timeline">
-            <li><span class="when">2024 – now</span><span class="what">Ph.D., Machine Learning</span><span class="where">MBZUAI, Abu Dhabi. Advisors: Prof. Tongliang Liu and Prof. Steve Liu.</span></li>
-            <li><span class="when">Apr – Oct 2026</span><span class="what">Research Intern; Project Leader, Embodied AI Team</span><span class="where">AgiBot X-Lab, Shenzhen. Mentors: <a href="https://scholar.google.com/citations?user=o31BPFsAAAAJ" target="_blank" rel="noopener">Dr. Shaoli Huang</a> and <a href="https://github.com/peng-zhihui" target="_blank" rel="noopener">Zhihui Peng</a> (co-founder of AgiBot).</span></li>
-            <li><span class="when">2021 – 2024</span><span class="what">Master's, Computer Science and Technology</span><span class="where">University of Electronic Science and Technology of China (UESTC), Chengdu.</span></li>
-            <li><span class="when">2017 – 2021</span><span class="what">B.Sc., Automation</span><span class="where">UESTC. GPA 3.89/4.00; National Scholarship, ranked 1st of 297.</span></li>
+            <li><span class="when">2024 to present</span><span class="what">Ph.D., Machine Learning</span><span class="where">MBZUAI, Abu Dhabi. Advisors: Prof. Tongliang Liu and Prof. Steve Liu.</span></li>
+            <li><span class="when">Apr to Oct 2026</span><span class="what">Research Intern; Project Leader, Embodied Navigation Team</span><span class="where">AgiBot X-Lab, Shenzhen. Mentors: <a href="https://scholar.google.com/citations?user=o31BPFsAAAAJ" target="_blank" rel="noopener">Dr. Shaoli Huang</a> and <a href="https://github.com/peng-zhihui" target="_blank" rel="noopener">Zhihui Peng</a> (co-founder of AgiBot).</span></li>
+            <li><span class="when">2021 to 2024</span><span class="what">Master's, Computer Science and Technology</span><span class="where">University of Electronic Science and Technology of China (UESTC), Chengdu.</span></li>
+            <li><span class="when">2017 to 2021</span><span class="what">B.Sc., Automation</span><span class="where">UESTC. GPA 3.89/4.00; National Scholarship, ranked 1st of 297.</span></li>
             <li><span class="when">Visits</span><span class="what">Visiting student, The University of Sydney</span><span class="where">Summer session, University of California, Berkeley.</span></li>
           </ol>
         </div>
@@ -971,7 +1057,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
           <h3>Service and honors</h3>
           <ul class="plain">
             <li>Co-organizer, <a href="https://lifegenip.cc/" target="_blank" rel="noopener">LifeGenIP</a> workshop, ECCV 2026.</li>
-            <li>Reviewer for CVPR, ECCV and ICCV (2024–2026), NeurIPS (2025–2026), ICLR and ICML (2025–2026), and AAAI 2025.</li>
+            <li>Reviewer for CVPR, ECCV and ICCV (2024 to 2026), NeurIPS (2025 to 2026), ICLR and ICML (2025 to 2026), and AAAI 2025.</li>
             <li>National Scholarship, ranked 1st of 297, Ministry of Education of China, 2020.</li>
             <li>First Prize, ISICDM 2020 challenge on low-dose CT image quality.</li>
             <li>“Liren” Elite of UESTC, one of five students university-wide, 2018.</li>
@@ -1025,7 +1111,6 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
           <h3 id="h-read">Read</h3>
           <ul class="life-tags" aria-label="Reading"><li>Anne Carson</li><li>Classical poetry</li></ul>
           <p><a href="https://www.nobelprize.org/prizes/literature/2026/summary/" target="_blank" rel="noopener">Anne Carson</a>, the Canadian poet and classicist, received the 2026 Nobel Prize in Literature for work “in playful dialogue with the classical tradition”. Three of her ideas I keep returning to: the best art carries you along with it; time is not a thing at all but a sense we read into movement; and a sentence half-dreamed at night can open a door to somewhere else.</p>
-          <p class="aside">Her view of time answers the Aristotle line in the reconstruction section above.</p>
         </article>
       </div>
       <div class="photos" id="photos" hidden>
@@ -1337,7 +1422,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
 
     function label(text, x, y, color, align) {
       ctx.globalAlpha = 1;
-      ctx.font = "500 " + Math.round(11 * DPR) + "px 'IBM Plex Mono', ui-monospace, monospace";
+      ctx.font = "700 " + Math.round(11 * DPR) + "px Lato, 'Helvetica Neue', Arial, sans-serif";
       ctx.textAlign = align || "left";
       ctx.fillStyle = color;
       ctx.fillText(text, x, y);
@@ -1563,6 +1648,8 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { schedule(); });
 
     readColors(); resize(); schedule();
+    var startMode = canvas.getAttribute("data-start-mode");
+    if (startMode && MODES[startMode]) { setMode(startMode); yaw = tYaw; pitch = tPitch; schedule(); }
     return { refresh: function () { readColors(); schedule(); }, setMode: setMode };
   })();
 })();
@@ -1605,7 +1692,7 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
   })();
 
   /* ---------- paper figures: click a figure to see it larger ---------- */
-  Array.prototype.forEach.call(document.querySelectorAll(".figs"), function (fold) {
+  Array.prototype.forEach.call(document.querySelectorAll(".figs, .materials"), function (fold) {
     var buttons = Array.prototype.slice.call(fold.querySelectorAll(".fig-zoom"));
     var items = buttons.map(function (b) {
       var im = b.querySelector("img");
@@ -1615,6 +1702,22 @@ a.wtitle:hover { text-decoration: underline; text-decoration-color: var(--lens, 
       b.addEventListener("click", function () { if (viewer) viewer.open(items, i, true); });
     });
   });
+
+  /* ---------- demo videos: play while on screen, pause when scrolled away ---------- */
+  (function () {
+    var vids = Array.prototype.slice.call(document.querySelectorAll("video[data-autoplay]"));
+    if (!vids.length) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var v = en.target;
+        if (en.isIntersecting && en.intersectionRatio >= 0.35) {
+          if (v.paused && !v.ended) { var p = v.play(); if (p && p.catch) p.catch(function () { /* autoplay refused: the controls remain */ }); }
+        } else if (!v.paused) { v.pause(); }
+      });
+    }, { threshold: [0, 0.35, 0.6] });
+    vids.forEach(function (v) { io.observe(v); });
+  })();
 
   /* ---------- photo gallery (shown once window.PHOTOS lists at least one photo) ---------- */
   (function () {
